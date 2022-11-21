@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 function PremiumArtists() {
   return (
     <>
-      <Navbar />
+      <Navbar children={undefined} />
       <div>Ini Premium Artist</div>
     </>
   );

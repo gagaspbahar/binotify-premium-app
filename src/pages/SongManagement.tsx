@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 function SongManagement() {
   return (
     <>
-      <Navbar />
+      <Navbar children={undefined} />
       <div>Ini Pengelolaan Lagu</div>
     </>
   );

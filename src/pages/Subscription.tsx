@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 function Subscription() {
   return (
     <>
-      <Navbar />
+      <Navbar children={undefined}/>
       <div>Ini Subscription</div>
     </>
   );
