@@ -62,7 +62,7 @@ export default function Navbar({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+    <Box bg={useColorModeValue('#212121', 'gray.900')}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', md: 'block' }}
@@ -166,7 +166,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       alignItems="center"
       bg={useColorModeValue('#212121', 'gray.900')}
       textColor={useColorModeValue('white', 'gray.200')}
-      borderBottomWidth="1px"
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
       {...rest}>
       <IconButton
@@ -215,11 +214,20 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               </HStack>
             </MenuButton>
             <MenuList
-              bg={useColorModeValue('white', 'gray.900')}
+              bg={useColorModeValue('black', 'gray.900')}
+              borderColor={useColorModeValue('black', 'gray.900')}
               >
-              <MenuItem>Profile</MenuItem>
+              <MenuItem bg="black"
+                _hover={{
+                  bg: 'gray',
+                  color: 'white',
+                }}>Profile</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem bg="black"
+                _hover={{
+                  bg: 'gray',
+                  color: 'white',
+                }}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

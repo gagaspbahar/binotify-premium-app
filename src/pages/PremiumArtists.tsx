@@ -1,11 +1,21 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 
+import {
+  Text, Box
+} from '@chakra-ui/react';
+
 function PremiumArtists() {
   return (
     <>
       <Navbar children={undefined} />
-      <div>Ini Premium Artist</div>
+      <Box minH="100vh"
+        bg="#212121"
+        textColor="white"
+        ml={{ base: 0, md: 60 }}
+      >
+        <Text  fontSize="4xl" fontWeight="bold" textAlign="left" ml='10'>Premium Artists</Text> 
+      </Box>
     </>
   );
 }
