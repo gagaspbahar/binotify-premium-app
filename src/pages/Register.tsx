@@ -107,7 +107,7 @@ function Login() {
               </Stack>
 
               <Stack pt={6}>
-                <Text align={"center"} textColor="#939393">
+                <Text align={"center"}>
                   Have an account?{" "}
                   <Link href="/login" color={"#1DB954"}>
                     Log In
