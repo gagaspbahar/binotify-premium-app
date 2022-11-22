@@ -50,8 +50,7 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome },
-  { name: 'Premium Artists', icon: FiTrendingUp },
-  { name: 'Premium Songs', icon: FiCompass },
+  { name: 'Song Management', icon: FiCompass },
   { name: 'Subscription Requests', icon: FiStar },
 ];
 
