@@ -14,6 +14,7 @@ import {
   Button,
   useColorModeValue,
   Link,
+  ButtonGroup,
 } from "@chakra-ui/react";
 
 function AddSong() {
@@ -25,9 +26,8 @@ function AddSong() {
         minH="100vh"
         bg="#212121"
         textColor="white"
-        ml={{ base: 0, md: 60 }}
+        ml={{ base: 0, md: 40 }}
         minW="100vh"
-        mx="auto"
       >
         <Text fontSize="4xl" fontWeight="bold" textAlign="center" mx="auto">
           Add Premium Song
@@ -63,17 +63,22 @@ function AddSong() {
               />
             </FormControl>
 
-            <Stack spacing={10} pt={2}>
-              <Button
-                borderRadius={"22px"}
-                size="lg"
-                bg={"#1DB954"}
-                color={"#121212"}
-                _hover={{ bg: "#169844" }}
-              >
-                Add Song
-              </Button>
-            </Stack>
+            <ButtonGroup gap="2" ml="500" px="76" mt="10">
+              <Link href="/song-management" style={{ textDecoration: "none" }}>
+                <Button bg="#1DB954" _hover={{ bg: "#1DB954", color: "black" }}>
+                  Done
+                </Button>
+              </Link>
+              <Link href="/song-management" style={{ textDecoration: "none" }}>
+                <Button
+                  colorScheme="#212121"
+                  variant="outline"
+                  _hover={{ bg: "#7D7575", color: "black" }}
+                >
+                  Cancel
+                </Button>
+              </Link>
+            </ButtonGroup>
           </Stack>
         </Box>
       </Box>
