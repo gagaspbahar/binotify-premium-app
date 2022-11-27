@@ -17,10 +17,38 @@ import {
 
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { axiosInstance } from "../util/axios";
+import { setAuthToken } from "../util/auth";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleShowClick = () => setShowPassword(!showPassword);
+
+  const handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  }
+
+  const handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  }
+
+  const handleLogin = async () => {
+    const response = await axiosInstance.post("/login", {
+      username: username,
+      password: password,
+    });
+
+    setLoading(true);
+
+    if (response.status === 200) {
+      console.log("Login successful");
+      setLoading(false);
+      setAuthToken(response.data.token);
+    }
+  }
 
   return (
     <>
@@ -48,6 +76,7 @@ function Login() {
                   bg="#212121"
                   placeholder="Enter your username"
                   border={"none"}
+                  onChange={handleChangeUsername}
                 />
               </FormControl>
 
@@ -59,6 +88,7 @@ function Login() {
                     bg="#212121"
                     placeholder="Enter your password"
                     border={"none"}
+                    onChange={handleChangePassword}
                   />
                   <InputRightElement h={"full"}>
                     <Button variant={"ghost"} onClick={handleShowClick}>
@@ -75,6 +105,7 @@ function Login() {
                   bg={"#1DB954"}
                   color={"#121212"}
                   _hover={{ bg: "#169844" }}
+                  onClick={handleLogin}
                 >
                   Login
                 </Button>
