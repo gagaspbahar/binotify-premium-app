@@ -87,7 +87,11 @@ function SongManagement() {
                 <Td>2</Td>
                 <Td>One Thing</Td>
                 <Td>3:50</Td>
-                <Td>Edit</Td>
+                <Td>
+                  <Link href="/edit-song" style={{ textDecoration: "none" }}>
+                    Edit
+                  </Link>
+                </Td>
               </Tr>
               <Tr>
                 <Td>3</Td>
