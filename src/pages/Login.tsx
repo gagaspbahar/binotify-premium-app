@@ -18,7 +18,7 @@ import {
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { axiosInstance } from "../util/axios";
-import { setAuthToken } from "../util/auth";
+import { setAuthToken, getAuthData } from "../util/auth";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,13 +27,17 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const handleShowClick = () => setShowPassword(!showPassword);
 
-  const handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setUsername(e.target.value);
-  }
+  };
 
-  const handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setPassword(e.target.value);
-  }
+  };
 
   const handleLogin = async () => {
     const response = await axiosInstance.post("/login", {
@@ -47,8 +51,10 @@ function Login() {
       console.log("Login successful");
       setLoading(false);
       setAuthToken(response.data.token);
+      console.log("hi");
+      console.log(getAuthData());
     }
-  }
+  };
 
   return (
     <>
