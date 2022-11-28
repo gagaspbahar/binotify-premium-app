@@ -18,8 +18,8 @@ import {
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { axiosInstance } from "../util/axios";
-import { setAuthToken } from "../util/auth";
 import { useNavigate } from "react-router-dom";
+import { setAuthToken, getAuthData } from "../util/auth";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,13 +29,17 @@ function Login() {
   const handleShowClick = () => setShowPassword(!showPassword);
   const navigate = useNavigate();
 
-  const handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setUsername(e.target.value);
-  }
+  };
 
-  const handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setPassword(e.target.value);
-  }
+  };
 
   const handleLogin = async () => {
     const response = await axiosInstance.post("/login", {
@@ -50,8 +54,10 @@ function Login() {
       setLoading(false);
       setAuthToken(response.data.token);
       navigate("/");
+      console.log("hi");
+      console.log(getAuthData());
     }
-  }
+  };
 
   return (
     <>
