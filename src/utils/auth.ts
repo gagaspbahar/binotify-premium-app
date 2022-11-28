@@ -1,12 +1,13 @@
 import jwt_decode from "jwt-decode";
+import { Payload } from "../types/user";
 
 function setAuthToken(token: string) {
   localStorage.setItem("token", token);
 }
 
-function getAuthData(): unknown {
+function getAuthData(): Payload {
   const tokentest = localStorage.getItem("token");
-  var decoded = jwt_decode(tokentest!);
+  const decoded: Payload = jwt_decode(tokentest!);
 
   return decoded;
 }

@@ -4,14 +4,39 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SongManagement from "./pages/SongManagement";
 import Subscription from "./pages/Subscription";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
 import AddSong from "./pages/AddSong";
 import DeleteSong from "./pages/DeleteSong";
 import EditSong from "./pages/EditSong";
+import { CustomRouteProps } from "./types/route";
+import { getAuthData } from "./utils/auth";
+import { Payload } from "./types/user";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const ProtectedRoute = ({
+    redirectPath = "/",
+    path,
+    children,
+    routeType,
+  }: CustomRouteProps): JSX.Element => {
+    let isAdmin = false;
+    const payload: Payload = getAuthData();
+    if (payload) {
+      isAdmin = payload.isAdmin;
+    }
+    if (isAdmin && routeType) {
+      return children;
+    } else if (!isAdmin && !routeType) {
+      return children;
+    } else {
+      return (
+        <>
+          <Navigate to={redirectPath} />;
+        </>
+      );
+    }
+  };
 
   return (
     <div className="App">
@@ -19,8 +44,22 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/subscription" element={<Subscription />} />
-        <Route path="/song-management" element={<SongManagement />} />
+        <Route
+          path="/subscription"
+          element={
+            <ProtectedRoute routeType={true} path="/subscription">
+              <Subscription />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/song-management"
+          element={
+            <ProtectedRoute routeType={false} path="/song-management">
+              <SongManagement />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/add-song" element={<AddSong />} />
         <Route path="/delete-song" element={<DeleteSong />} />
         <Route path="/edit-song" element={<EditSong />} />

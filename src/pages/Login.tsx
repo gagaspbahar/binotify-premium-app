@@ -13,13 +13,15 @@ import {
   useColorModeValue,
   Link,
   Image,
+  Spinner,
 } from "@chakra-ui/react";
 
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { axiosInstance } from "../util/axios";
+import { axiosInstance } from "../utils/axios";
 import { useNavigate } from "react-router-dom";
-import { setAuthToken, getAuthData } from "../util/auth";
+import { setAuthToken, getAuthData } from "../utils/auth";
+import { Payload } from "../types/user";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,9 +55,15 @@ function Login() {
       console.log("Login successful");
       setLoading(false);
       setAuthToken(response.data.token);
-      navigate("/");
-      console.log("hi");
-      console.log(getAuthData());
+      const payload: Payload = getAuthData();
+      if (payload.isAdmin) {
+        navigate("/subscription")
+      } else {
+        navigate("/song-management")
+      }
+    } else {
+      setLoading(false);
+      console.log("Error login")
     }
   };
 
