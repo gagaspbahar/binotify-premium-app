@@ -14,6 +14,14 @@ import {
   Link,
   Image,
   Spinner,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { useState } from "react";
@@ -30,6 +38,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const handleShowClick = () => setShowPassword(!showPassword);
   const navigate = useNavigate();
+  // const { isOpen, onOpen, onClose } = useDisclosure()
 
   const handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -43,17 +52,23 @@ function Login() {
     setPassword(e.target.value);
   };
 
+
   const handleLogin = async () => {
+    setLoading(true)
+
     const response = await axiosInstance.post("/login", {
       username: username,
       password: password,
     });
 
-    setLoading(true);
+
 
     if (response.status === 200) {
+      // setLoading(true);
+      console.log(loading)
       console.log("Login successful");
-      setLoading(false);
+      console.log(loading)
+      setLoading(false)
       setAuthToken(response.data.token);
       const payload: Payload = getAuthData();
       if (payload.isAdmin) {
@@ -69,6 +84,15 @@ function Login() {
 
   return (
     <>
+ 
+      {/* nanti distyling */}
+     {loading && <Spinner thickness='4px'
+       speed='0.65s'
+      emptyColor='gray.200'
+      color='blue.500'
+      size='xl'/>}
+      
+
       <Flex
         minH={"100vh"}
         align={"center"}
@@ -123,6 +147,7 @@ function Login() {
                   color={"#121212"}
                   _hover={{ bg: "#169844" }}
                   onClick={handleLogin}
+                  
                 >
                   Login
                 </Button>
