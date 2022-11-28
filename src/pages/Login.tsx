@@ -19,6 +19,7 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { axiosInstance } from "../util/axios";
 import { setAuthToken } from "../util/auth";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,6 +27,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const handleShowClick = () => setShowPassword(!showPassword);
+  const navigate = useNavigate();
 
   const handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -47,6 +49,7 @@ function Login() {
       console.log("Login successful");
       setLoading(false);
       setAuthToken(response.data.token);
+      navigate("/");
     }
   }
 
