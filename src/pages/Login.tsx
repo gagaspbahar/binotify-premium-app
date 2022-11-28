@@ -27,6 +27,7 @@ import {
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { axiosInstance } from "../utils/axios";
+import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { setAuthToken, getAuthData } from "../utils/auth";
 import { Payload } from "../types/user";
@@ -38,7 +39,6 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const handleShowClick = () => setShowPassword(!showPassword);
   const navigate = useNavigate();
-  // const { isOpen, onOpen, onClose } = useDisclosure()
 
   const handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -52,16 +52,35 @@ function Login() {
     setPassword(e.target.value);
   };
 
-
   const handleLogin = async () => {
-    setLoading(true)
+    setLoading(true);
+    try {
+      const response = await axiosInstance.post("/login", {
+        username: username,
+        password: password,
+      });
 
-    const response = await axiosInstance.post("/login", {
-      username: username,
-      password: password,
-    });
+      console.log("Login successful");
+      setLoading(false);
+      setAuthToken(response.data.token);
 
+      const payload: Payload = getAuthData();
+      if (payload.isAdmin) {
+        navigate("/subscription");
+      } else {
+        navigate("/song-management");
+      }
+    } catch (error) {
+      setLoading(false);
+      const err = error as AxiosError;
+      if (err.response?.status === 401) {
+        console.log("Login Failed");
+      } else {
+        console.log("Internal server error");
+      }
+    }
 
+    /*
 
     if (response.status === 200) {
       // setLoading(true);
@@ -80,18 +99,22 @@ function Login() {
       setLoading(false);
       console.log("Error login")
     }
+  
+  */
   };
 
   return (
     <>
- 
       {/* nanti distyling */}
-     {loading && <Spinner thickness='4px'
-       speed='0.65s'
-      emptyColor='gray.200'
-      color='blue.500'
-      size='xl'/>}
-      
+      {loading && (
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      )}
 
       <Flex
         minH={"100vh"}
@@ -147,7 +170,6 @@ function Login() {
                   color={"#121212"}
                   _hover={{ bg: "#169844" }}
                   onClick={handleLogin}
-                  
                 >
                   Login
                 </Button>
