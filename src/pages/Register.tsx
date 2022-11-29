@@ -11,17 +11,92 @@ import {
   Text,
   useColorModeValue,
   Link,
+  Spinner,
 } from "@chakra-ui/react";
-
+import { axiosInstance } from "../utils/axios";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
-function Login() {
+function Register() {
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmation, setConfirmation] = useState("");
   const handleShowClick = () => setShowPassword(!showPassword);
+  const navigate = useNavigate();
+
+  const handleChangeName: React.ChangeEventHandler<HTMLInputElement> = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setName(e.target.value);
+  };
+
+  const handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setUsername(e.target.value);
+  };
+
+  const handleChangeEmail: React.ChangeEventHandler<HTMLInputElement> = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEmail(e.target.value);
+  };
+
+  const handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setPassword(e.target.value);
+  };
+
+  const handleChangeConfirmation: React.ChangeEventHandler<HTMLInputElement> = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setConfirmation(e.target.value);
+  };
+
+  const handleRegister = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.post("/register", {
+        username: username,
+        password: password,
+        email: email,
+        name: name,
+      });
+
+      console.log("Register successful");
+      setLoading(false);
+
+      navigate("/login");
+    } catch (error) {
+      setLoading(false);
+      const err = error as AxiosError;
+      if (err.response?.status === 401) {
+        console.log("Register Failed");
+      } else {
+        console.log("Another Error");
+      }
+    }
+  };
 
   return (
     <>
+      {/* nanti distyling */}
+      {loading && (
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      )}
       <Flex
         minH={"100vh"}
         align={"center"}
@@ -41,6 +116,16 @@ function Login() {
 
           <Box>
             <Stack spacing={4}>
+              <FormControl id="name" isRequired>
+                <FormLabel>Insert your name</FormLabel>
+                <Input
+                  type="text"
+                  bg="#212121"
+                  placeholder="Enter your name."
+                  border={"none"}
+                  onChange={handleChangeName}
+                />
+              </FormControl>
               <FormControl id="username" isRequired>
                 <FormLabel>Create a username</FormLabel>
                 <Input
@@ -48,15 +133,17 @@ function Login() {
                   bg="#212121"
                   placeholder="Enter your username."
                   border={"none"}
+                  onChange={handleChangeUsername}
                 />
               </FormControl>
-              <FormControl id="username" isRequired>
+              <FormControl id="email" isRequired>
                 <FormLabel>What's your email?</FormLabel>
                 <Input
                   type="text"
                   bg="#212121"
                   placeholder="Enter your email."
                   border={"none"}
+                  onChange={handleChangeEmail}
                 />
               </FormControl>
 
@@ -68,6 +155,7 @@ function Login() {
                     bg="#212121"
                     placeholder="Enter your password"
                     border={"none"}
+                    onChange={handleChangePassword}
                   />
                   <InputRightElement h={"full"}>
                     <Button variant={"ghost"} onClick={handleShowClick}>
@@ -85,6 +173,7 @@ function Login() {
                     bg="#212121"
                     placeholder="Enter your password"
                     border={"none"}
+                    onChange={handleChangeConfirmation}
                   />
                   <InputRightElement h={"full"}>
                     <Button variant={"ghost"} onClick={handleShowClick}>
@@ -101,6 +190,7 @@ function Login() {
                   bg={"#1DB954"}
                   color={"#121212"}
                   _hover={{ bg: "#169844" }}
+                  onClick={handleRegister}
                 >
                   Sign Up
                 </Button>
@@ -122,4 +212,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

@@ -20,21 +20,27 @@ function App() {
     children,
     routeType,
   }: CustomRouteProps): JSX.Element => {
-    let isAdmin = false;
-    const payload: Payload = getAuthData();
-    if (payload) {
-      isAdmin = payload.isAdmin;
-    }
-    if (isAdmin && routeType) {
-      return children;
-    } else if (!isAdmin && !routeType) {
-      return children;
-    } else {
+    if (localStorage.getItem("token") === null) {
       return (
         <>
-          <Navigate to={redirectPath} />;
+          <Navigate to="/login" />;
         </>
       );
+    } else {
+      let isAdmin = false;
+      const payload: Payload = getAuthData();
+      if (payload) {
+        isAdmin = payload.isAdmin;
+      }
+      if (isAdmin === routeType) {
+        return children;
+      } else {
+        return (
+          <>
+            <Navigate to={redirectPath} />;
+          </>
+        );
+      }
     }
   };
 
