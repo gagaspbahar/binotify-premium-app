@@ -72,7 +72,7 @@ function Subscription() {
             <Tbody>
               {users.map((user) => {
                 return (
-                  <Tr>
+                  <Tr key={user.no}>
                     <Td>{user.no}</Td>
                     <Td>{user.username}</Td>
                     <Td>{user.email}</Td>
