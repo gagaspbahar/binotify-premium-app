@@ -1,6 +1,6 @@
 type Payload = {
   username: string;
-  email: string;
+  userId: number;
   isAdmin: boolean;
 }
 
