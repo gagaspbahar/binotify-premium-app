@@ -4,23 +4,69 @@ import Navbar from "../components/Navbar";
 import {
   Text,
   Box,
-  Flex,
   FormControl,
   FormLabel,
   Input,
-  InputGroup,
-  InputRightElement,
   Stack,
   Button,
-  useColorModeValue,
   Link,
   ButtonGroup,
+  Spinner,
 } from "@chakra-ui/react";
+import { axiosConfig } from "../utils/axios";
+import { getUserId } from "../utils/auth";
+import axios from "axios";
+import config from "../config/config";
+
+import { useState } from "react";
 
 function AddSong() {
+  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState("");
+  const [audio, setAudio] = useState<File | null>();
+  const newAxiosInstance = axios.create(axiosConfig);
+  const userId = getUserId();
+
+  const handleChangeTitle: React.ChangeEventHandler<HTMLInputElement> = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setTitle(e.target.value);
+    console.log("hi");
+    console.log(title);
+  };
+
+  const handleChangeFile: React.ChangeEventHandler<HTMLInputElement> = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setAudio(e.target.files?.item(0));
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("file", audio as File);
+    formData.append("title", title);
+    formData.append("artist_id", userId.toString());
+    console.log(formData);
+    newAxiosInstance
+      .post(`${config.REST_API_URL}/song`, formData)
+      .then((res) => {
+        console.log(res);
+        alert(res.data.message);
+      });
+  };
+
   return (
     <>
       <Navbar children={undefined} />
+      {loading && (
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      )}
 
       <Box
         minH="100vh"
@@ -39,33 +85,32 @@ function AddSong() {
               <Input
                 type="text"
                 bg="#FFFFFF"
-                placeholder="Enter your username."
+                placeholder="Enter song title."
                 border={"none"}
+                color="black"
+                onChange={handleChangeTitle}
               />
             </FormControl>
-            <FormControl id="singer" isRequired>
-              <FormLabel>Insert Singer</FormLabel>
-              <Input
-                type="text"
-                bg="#FFFFFF"
-                placeholder="Enter your email."
-                border={"none"}
-              />
-            </FormControl>
-            <FormControl id="username" isRequired>
+            <FormControl id="song-file" isRequired>
               <FormLabel>Insert Song</FormLabel>
               <Input
                 type="file"
                 bg="#FFFFFF"
                 placeholder="Enter your email."
+                color="black"
                 border={"none"}
                 pt="1"
+                onChange={handleChangeFile}
               />
             </FormControl>
 
             <ButtonGroup gap="2" ml="500" px="76" mt="10">
               <Link href="/song-management" style={{ textDecoration: "none" }}>
-                <Button bg="#1DB954" _hover={{ bg: "#1DB954", color: "black" }}>
+                <Button
+                  bg="#1DB954"
+                  _hover={{ bg: "#1DB954", color: "black" }}
+                  onClick={handleSubmit}
+                >
                   Done
                 </Button>
               </Link>
