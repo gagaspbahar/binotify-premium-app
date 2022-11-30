@@ -9,13 +9,14 @@ import { Button } from "@chakra-ui/react";
 import AddSong from "./pages/AddSong";
 import DeleteSong from "./pages/DeleteSong";
 import EditSong from "./pages/EditSong";
+import NotFound from "./pages/NotFound";
 import { CustomRouteProps } from "./types/route";
 import { getAuthData } from "./utils/auth";
 import { Payload } from "./types/user";
 
 function App() {
   const ProtectedRoute = ({
-    redirectPath = "/",
+    redirectPath = "/notfound",
     path,
     children,
     routeType,
@@ -58,6 +59,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/notfound" element={<NotFound />} />
         <Route
           path="/subscription"
           element={
@@ -74,9 +76,30 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/add-song" element={<AddSong />} />
-        <Route path="/delete-song" element={<DeleteSong />} />
-        <Route path="/edit-song" element={<EditSong />} />
+        <Route
+          path="/add-song"
+          element={
+            <ProtectedRoute routeType={false} path="/add-song">
+              <AddSong />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/delete-song"
+          element={
+            <ProtectedRoute routeType={false} path="/delete-song">
+              <DeleteSong />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit-song"
+          element={
+            <ProtectedRoute routeType={false} path="/edit-song">
+              <EditSong />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </div>
   );

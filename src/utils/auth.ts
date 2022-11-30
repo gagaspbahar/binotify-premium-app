@@ -23,4 +23,8 @@ function logout() {
   localStorage.removeItem("token");
 }
 
-export { setAuthToken, getAuthData, logout };
+function getUserId(): number {
+  return getAuthData().userId;
+}
+
+export { setAuthToken, getAuthData, getUserId, logout };
