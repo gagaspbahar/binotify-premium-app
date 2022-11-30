@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import playIcon from "../assets/play-white.png";
 
@@ -8,24 +8,64 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   Image,
   Link,
   TableContainer,
-  Flex,
-  Spacer,
   ButtonGroup,
   Button,
 } from "@chakra-ui/react";
-
+import { axiosConfig } from "../utils/axios";
 import { FiTrash } from "react-icons/fi";
+import config from "../config/config";
+import axios from "axios";
+import { getUserId } from "../utils/auth";
+const userId = getUserId();
 
 function DeleteSong() {
+  type Songs = {
+    no: number;
+    song_id: number;
+    title: string;
+    artist_id: number;
+    audio_path: string;
+  };
+
+  const initialSongs: Songs[] = [];
+  const [page, setPage] = useState(1);
   const [showIcon, setShowIcon] = useState(false);
+  const [songs, setSongs] = useState(initialSongs);
+  const [length, setLength] = useState(0);
+  const newAxiosInstance = axios.create(axiosConfig);
+
+  useEffect(() => {
+    newAxiosInstance
+      .get(`${config.REST_API_URL}/songlist/${userId}?page=${page}`)
+      .then((res) => {
+        const songData: Songs[] = res.data.data.songList.map((song: any) => {
+          return {
+            no: res.data.data.songList.indexOf(song) + 1,
+            song_id: song.songId,
+            title: song.title,
+            artist_id: song.artist_id,
+            audio_path: song.audio_path,
+          };
+        });
+        setSongs(songData);
+        setLength(songs.length);
+      });
+  }, [page, length]);
+
+  const handleDeletion = async (songId: number) => {
+    newAxiosInstance
+      .delete(`${config.REST_API_URL}/song/${songId}`)
+      .then((res) => {
+        console.log(res);
+        setLength(length - 1);
+      });
+  };
 
   return (
     <>
@@ -41,70 +81,23 @@ function DeleteSong() {
               <Tr>
                 <Th color="white">#</Th>
                 <Th color="white">Title</Th>
-                <Th color="white">Duration</Th>
                 <Th color="white"></Th>
               </Tr>
             </Thead>
+
             <Tbody>
-              {/* efeknya boleh dihapus aja tar kalo artis gabisa play lagu */}
-              <Tr>
-                <Td>
-                  {showIcon ? <Image src={playIcon} w="18px" h="18px" /> : "1"}
-                </Td>
-                <Td>What Makes You Beautiful</Td>
-                <Td>3:50</Td>
-                <Td>
-                  <FiTrash />
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>2</Td>
-                <Td>One Thing</Td>
-                <Td>3:50</Td>
-                <Td>
-                  <FiTrash />
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>3</Td>
-                <Td>Night Changes</Td>
-                <Td>3:50</Td>
-                <Td>
-                  <FiTrash />
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>4</Td>
-                <Td>History</Td>
-                <Td>3:50</Td>
-                <Td>
-                  <FiTrash />
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>5</Td>
-                <Td>Steal My Girl</Td>
-                <Td>3:50</Td>
-                <Td>
-                  <FiTrash />
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>6</Td>
-                <Td>18</Td>
-                <Td>3:50</Td>
-                <Td>
-                  <FiTrash />
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>7</Td>
-                <Td>Drag Me Down</Td>
-                <Td>3:50</Td>
-                <Td>
-                  <FiTrash />
-                </Td>
-              </Tr>
+              {songs.length > 0 &&
+                songs.map((item) => {
+                  return (
+                    <Tr key={item.song_id}>
+                      <Td>{item.no}</Td>
+                      <Td>{item.title}</Td>
+                      <Td>
+                        <FiTrash onClick={() => handleDeletion(item.song_id)} />
+                      </Td>
+                    </Tr>
+                  );
+                })}
             </Tbody>
           </Table>
         </TableContainer>
