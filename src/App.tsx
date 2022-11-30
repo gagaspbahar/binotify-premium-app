@@ -33,6 +33,14 @@ function App() {
         isAdmin = payload.isAdmin;
       }
       if (isAdmin === routeType) {
+        if (routeType === false) {
+          if(payload.userId != 0) {
+            return children
+          }
+          else {
+            return <Navigate to={redirectPath} />
+          }
+        }
         return children;
       } else {
         return (

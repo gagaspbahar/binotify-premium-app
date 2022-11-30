@@ -7,9 +7,16 @@ function setAuthToken(token: string) {
 
 function getAuthData(): Payload {
   const tokentest = localStorage.getItem("token");
-  const decoded: Payload = jwt_decode(tokentest!);
-
-  return decoded;
+  try{
+    const decoded: Payload = jwt_decode(tokentest!);
+    return decoded;
+  } catch (err) {
+    return {
+      username: "",
+      userId: 0,
+      isAdmin: false,
+    };
+  }
 }
 
 function logout() {
