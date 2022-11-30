@@ -59,7 +59,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/notfound" element={<NotFound />} />
+        
         <Route
           path="/subscription"
           element={
@@ -100,6 +100,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </div>
   );
