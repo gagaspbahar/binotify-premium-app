@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 
 import {
@@ -21,36 +21,94 @@ import { useState } from "react";
 
 import { colors } from "../theme";
 
+import config from "../config/config";
+import { axiosConfig, axiosInstance } from "../utils/axios";
+import axios from "axios";
+
 interface Users {
   no: number;
-  username: string;
-  email: string;
+  subscriber_id: number;
+  artistName: string;
   status: string;
+  artistId: number;
 }
 
-const initialUsers: Users[] = [
-  {
-    no: 1,
-    username: "gagasgede",
-    email: "gagasgede@binotify.com",
-    status: "PENDING",
-  },
-  {
-    no: 2,
-    username: "clauculus",
-    email: "clauculus@binotify.com",
-    status: "ACCEPTED",
-  },
-  {
-    no: 3,
-    username: "lyoraf",
-    email: "lyo@binotify.com",
-    status: "PENDING",
-  },
-];
+const initialUsers: Users[] = [];
 
 function Subscription() {
   const [users, setUsers] = useState(initialUsers);
+  const [page, setPage] = useState(1);
+  const newAxiosInstance = axios.create(axiosConfig)
+  useEffect(() => {
+    newAxiosInstance
+      .get(`${config.REST_API_URL}/subscription?page=${page}`)
+      .then((res) => {
+        const userData: Users[] = res.data.data.map((user: any) => {
+          return {
+            no: res.data.data.indexOf(user) + 1,
+            subscriber_id: user.subscriber_id,
+            artistName: user.artist_name,
+            status: user.status,
+            artistId: user.creator_id,
+          };
+        });
+        setUsers(userData);
+      });
+  }, [page, users.length]);
+
+  const handleNextPage = (e: any) => {
+    setPage(page + 1);
+  };
+
+  const handlePrevPage = (e: any) => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleAccept = (creator_id: number, subscriber_id: number) => {
+    newAxiosInstance
+      .put(`${config.REST_API_URL}/subscription/update`, {
+        creator_id: creator_id,
+        subscriber_id: subscriber_id,
+        status: "ACCEPTED",
+      })
+      .then((res) => {
+        setUsers(
+          users.map((user) => {
+            if (
+              user.artistId === creator_id &&
+              user.subscriber_id === subscriber_id
+            ) {
+              user.status = "ACCEPTED";
+            }
+            return user;
+          })
+        );
+      });
+  };
+
+  const handleReject = (creator_id: number, subscriber_id: number) => {
+    newAxiosInstance
+      .put(`${config.REST_API_URL}/subscription/update`, {
+        creator_id: creator_id,
+        subscriber_id: subscriber_id,
+        status: "REJECTED",
+      })
+      .then((res) => {
+        setUsers(
+          users.map((user) => {
+            if (
+              user.artistId === creator_id &&
+              user.subscriber_id === subscriber_id
+            ) {
+              user.status = "REJECTED";
+            }
+            return user;
+          })
+        );
+      });
+  };
 
   return (
     <>
@@ -64,8 +122,8 @@ function Subscription() {
             <Thead>
               <Tr>
                 <Th color="white">No</Th>
-                <Th color="white">Username</Th>
-                <Th color="white">Email</Th>
+                <Th color="white">User ID</Th>
+                <Th color="white">Artist Name</Th>
                 <Th color="white">Status</Th>
               </Tr>
             </Thead>
@@ -74,8 +132,8 @@ function Subscription() {
                 return (
                   <Tr key={user.no}>
                     <Td>{user.no}</Td>
-                    <Td>{user.username}</Td>
-                    <Td>{user.email}</Td>
+                    <Td>{user.subscriber_id}</Td>
+                    <Td>{user.artistName}</Td>
                     <Td>
                       {user.status === "PENDING" ? (
                         <ButtonGroup gap="2">
@@ -84,6 +142,9 @@ function Subscription() {
                             _hover={{
                               bg: colors.white,
                               color: "black",
+                            }}
+                            onClick={() => {
+                              handleAccept(user.artistId, user.subscriber_id);
                             }}
                           >
                             Accept
@@ -94,6 +155,9 @@ function Subscription() {
                             _hover={{
                               bg: colors.white,
                               color: "black",
+                            }}
+                            onClick={() => {
+                              handleReject(user.artistId, user.subscriber_id);
                             }}
                           >
                             Reject

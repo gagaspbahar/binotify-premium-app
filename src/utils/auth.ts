@@ -12,4 +12,8 @@ function getAuthData(): Payload {
   return decoded;
 }
 
-export { setAuthToken, getAuthData };
+function logout() {
+  localStorage.removeItem("token");
+}
+
+export { setAuthToken, getAuthData, logout };
