@@ -23,11 +23,11 @@ import axios from "axios";
 import config from "../config/config";
 import Loading from "../components/Loading";
 import { useState } from "react";
-import {Routes, Route, useNavigate} from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 function AddSong() {
   const [loading, setIsLoading] = useState(false);
-  const [showAlert, setShowAlert] = useState(false)
+  const [showAlert, setShowAlert] = useState(false);
   const [title, setTitle] = useState("");
   const [audio, setAudio] = useState<File | null>();
   const newAxiosInstance = axios.create(axiosConfig);
@@ -71,7 +71,7 @@ function AddSong() {
       <Navbar children={undefined} />
 
       {showAlert && (
-        <Alert status='success'>
+        <Alert status="success">
           <AlertIcon />
           Song Added Successfully!
         </Alert>
@@ -115,15 +115,15 @@ function AddSong() {
 
             <ButtonGroup gap="2" ml="30vh" mr="30vh" px="76" pt="6">
               {/* <Link href="/song-management" style={{ textDecoration: "none" }}> */}
-                <Button
-                  bg="#1DB954"
-                  _hover={{ bg: "#1DB954", color: "black" }}
-                  onClick={handleSubmit}
-                >
-                  Done
-                </Button>
+              <Button
+                bg="#1DB954"
+                _hover={{ bg: "#1DB954", color: "black" }}
+                onClick={handleSubmit}
+              >
+                Done
+              </Button>
               {/* </Link> */}
-              <Link href="/song-management" style={{ textDecoration: "none" }}>
+              <RouterLink to={{ pathname: "/song-management" }}>
                 <Button
                   colorScheme="#212121"
                   variant="outline"
@@ -131,7 +131,7 @@ function AddSong() {
                 >
                   Cancel
                 </Button>
-              </Link>
+              </RouterLink>
             </ButtonGroup>
           </Stack>
         </Box>

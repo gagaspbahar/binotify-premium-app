@@ -122,7 +122,7 @@ function SongManagement() {
           </Text>
           <Spacer />
           <ButtonGroup gap="2">
-            <Link href="/add-song" style={{ textDecoration: "none" }}>
+            <RouterLink to={{ pathname: "/add-song" }}>
               <Button
                 colorScheme="#212121"
                 variant="outline"
@@ -130,7 +130,7 @@ function SongManagement() {
               >
                 Add Songs
               </Button>
-            </Link>
+            </RouterLink>
             {/*
             <Link href="/delete-song" style={{ textDecoration: "none" }}>
               <Button
@@ -166,14 +166,15 @@ function SongManagement() {
                       <Td>{item.no}</Td>
                       <Td>{item.title}</Td>
                       <Td>
-                        <RouterLink to={{"pathname": "/edit-song"}} state={{"id": item.song_id}} >
+                        <RouterLink
+                          to={{ pathname: "/edit-song" }}
+                          state={{ id: item.song_id }}
+                        >
                           Edit
                         </RouterLink>
                       </Td>
                       <Td>
                         <FiTrash onClick={() => handleDeletion(item.song_id)} />
-           
-
                       </Td>
                     </Tr>
                   );
