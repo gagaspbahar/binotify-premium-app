@@ -38,7 +38,7 @@ const initialUsers: Users[] = [];
 function Subscription() {
   const [users, setUsers] = useState(initialUsers);
   const [page, setPage] = useState(1);
-  const newAxiosInstance = axios.create(axiosConfig)
+  const newAxiosInstance = axios.create(axiosConfig);
   useEffect(() => {
     newAxiosInstance
       .get(`${config.REST_API_URL}/subscription?page=${page}`)
@@ -173,6 +173,30 @@ function Subscription() {
             </Tbody>
           </Table>
         </TableContainer>
+        <Box textAlign="center" py="10">
+          <ButtonGroup gap="2">
+            <Button
+              bg={colors.primaryColor}
+              _hover={{
+                bg: colors.white,
+                color: "black",
+              }}
+              onClick={handlePrevPage}
+            >
+              Prev
+            </Button>
+            <Button
+              bg={colors.primaryColor}
+              _hover={{
+                bg: colors.white,
+                color: "black",
+              }}
+              onClick={handleNextPage}
+            >
+              Next
+            </Button>
+          </ButtonGroup>
+        </Box>
       </Box>
     </>
   );
