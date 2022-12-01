@@ -24,7 +24,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { axiosInstance } from "../utils/axios";
 import { AxiosError } from "axios";
@@ -37,6 +37,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
   const handleShowClick = () => setShowPassword(!showPassword);
   const navigate = useNavigate();
 
@@ -51,6 +52,16 @@ function Login() {
   ) => {
     setPassword(e.target.value);
   };
+
+  useEffect(() => {disableWhenEmpty()}, [username, password]);
+
+  const disableWhenEmpty = () => {
+    if (username === "" || password === "") {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }
 
   const handleLogin = async () => {
     setLoading(true);
@@ -170,6 +181,7 @@ function Login() {
                   color={"#121212"}
                   _hover={{ bg: "#169844" }}
                   onClick={handleLogin}
+                  disabled={isDisabled}
                 >
                   Login
                 </Button>
