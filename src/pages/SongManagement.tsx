@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import playIcon from "../assets/play-white.png";
 
@@ -20,6 +20,13 @@ import {
   Spacer,
   ButtonGroup,
   Button,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { axiosConfig } from "../utils/axios";
 import { getUserId } from "../utils/auth";
@@ -46,6 +53,9 @@ function SongManagement() {
   const [length, setLength] = useState(0);
   const newAxiosInstance = axios.create(axiosConfig());
   const userId = getUserId();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef<null>(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -174,7 +184,36 @@ function SongManagement() {
                         </RouterLink>
                       </Td>
                       <Td>
-                        <FiTrash onClick={() => handleDeletion(item.song_id)} />
+                        {/* <FiTrash onClick={() => handleDeletion(item.song_id)} /> */}
+                        <FiTrash onClick={onOpen} />
+                        
+                        <AlertDialog
+                          isOpen={isOpen}
+                          leastDestructiveRef={cancelRef}
+                          onClose={onClose}
+                        >
+                          <AlertDialogOverlay>
+                            <AlertDialogContent>
+                              <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                Delete Song
+                              </AlertDialogHeader>
+
+                              <AlertDialogBody>
+                                Are you sure? You can't undo this action afterwards.
+                              </AlertDialogBody>
+
+                              <AlertDialogFooter>
+                                <Button ref={cancelRef} onClick={onClose}>
+                                  Cancel
+                                </Button>
+                                <Button colorScheme='red' onClick={() => handleDeletion(item.song_id)} ml={3}>
+                                  Delete
+                                </Button>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialogOverlay>
+                        </AlertDialog>
+
                       </Td>
                     </Tr>
                   );
