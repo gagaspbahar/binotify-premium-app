@@ -12,14 +12,17 @@ import {
   useColorModeValue,
   Link,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../utils/axios";
 import { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import Loading from "../components/Loading";
 
 function Register() {
+  const toast = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -128,11 +131,27 @@ function Register() {
         email: email,
         name: name,
       });
-
-      console.log("Register successful");
-      setIsLoading(false);
-
-      navigate("/login");
+      if (response.status === 200) {
+        toast({
+          title: "Account created.",
+          description: "We've created your account for you.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        setIsLoading(false);
+        navigate("/login");
+      }
+      else {
+        toast({
+          title: "Error.",
+          description: "Something went wrong.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        setIsLoading(false);
+      }
     } catch (error) {
       setIsLoading(false);
       const err = error as AxiosError;
@@ -146,16 +165,7 @@ function Register() {
 
   return (
     <>
-      {/* nanti distyling */}
-      {loading && (
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
-      )}
+      <Loading loading={loading} />
       <Flex
         minH={"100vh"}
         align={"center"}
@@ -284,9 +294,9 @@ function Register() {
               <Stack pt={6}>
                 <Text align={"center"}>
                   Have an account?{" "}
-                  <Link href="/login" color={"#1DB954"}>
+                  <RouterLink to={{"pathname":"/login"}} color={"#1DB954"} >
                     Log In
-                  </Link>
+                  </RouterLink>
                 </Text>
               </Stack>
             </Stack>

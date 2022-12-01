@@ -17,6 +17,7 @@ import {
   ButtonGroup,
   FormHelperText,
   color,
+  useToast,
 } from "@chakra-ui/react";
 import { useLocation, useParams, Link as RouterLink } from "react-router-dom";
 import { axiosConfig } from "../utils/axios";
@@ -31,6 +32,7 @@ function EditSong() {
     title: string;
     filename: string;
   };
+  const toast = useToast();
   const location = useLocation();
   const { id } = location.state;
   const [song, setSong] = useState<Song>();
@@ -60,29 +62,52 @@ function EditSong() {
     });
   }, []);
 
-  const handleSubmit = async () => {
-    setIsLoading(true);
-    const formData = new FormData();
-    console.log("liat data");
-    console.log(title);
-    console.log(audio);
-    if (audio !== undefined) {
-      formData.append("file", audio as File);
-      console.log("masok file");
-    }
-    if (title !== "") {
-      formData.append("title", title);
-      console.log("masok title");
-    }
-    formData.append("artist_id", userId.toString());
-    console.log(formData);
-    newAxiosInstance
-      .put(`${config.REST_API_URL}/song/${id}`, formData)
-      .then((res) => {
-        console.log(res);
-        alert(res.data.message);
+  const validate = () => {
+    if (title === "") {
+      toast({
+        title: "Title is required",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
       });
-    setIsLoading(false);
+      return false;
+    }
+    if (audio === undefined) {
+      toast({
+        title: "Audio is required",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    if (validate()) {
+      setIsLoading(true);
+      const formData = new FormData();
+      if (audio !== undefined) {
+        formData.append("file", audio as File);
+      }
+      if (title !== "") {
+        formData.append("title", title);
+      }
+      formData.append("artist_id", userId.toString());
+      console.log(formData);
+      newAxiosInstance
+        .put(`${config.REST_API_URL}/song/${id}`, formData)
+        .then((res) => {
+          toast({
+            title: res.data.message,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          })
+        });
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -103,6 +128,7 @@ function EditSong() {
                 bg="#FFFFFF"
                 color="black"
                 placeholder={song?.title}
+                defaultValue={song?.title}
                 border={"none"}
                 onChange={handleChangeTitle}
               />
@@ -126,7 +152,7 @@ function EditSong() {
               </FormHelperText>
             </FormControl>
 
-            <ButtonGroup gap="2" ml="500" px="76" pt="30">
+            <ButtonGroup gap="2" ml="30vw" mr="30vw" px="25%" pt="6">
               <Link style={{ textDecoration: "none" }}>
                 <Button
                   bg="#1DB954"

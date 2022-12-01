@@ -15,6 +15,7 @@ import {
   Select,
   Button,
   ButtonGroup,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useState } from "react";
@@ -37,6 +38,7 @@ interface Users {
 const initialUsers: Users[] = [];
 
 function Subscription() {
+  const toast = useToast();
   const [users, setUsers] = useState(initialUsers);
   const [page, setPage] = useState(1);
   const [loading, setIsLoading] = useState(false);
@@ -58,7 +60,7 @@ function Subscription() {
         });
         setUsers(userData);
         setIsLoading(false);
-      })
+      });
   }, [page, users.length]);
 
   const handleNextPage = (e: any) => {
@@ -80,6 +82,13 @@ function Subscription() {
         status: "ACCEPTED",
       })
       .then((res) => {
+        toast({
+          title: "Success",
+          description: "Subscription accepted successfully",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
         setUsers(
           users.map((user) => {
             if (
@@ -91,6 +100,16 @@ function Subscription() {
             return user;
           })
         );
+        setIsLoading(false);
+      })
+      .catch((err: any) => {
+        toast({
+          title: "Error",
+          description: err.response.data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
         setIsLoading(false);
       });
   };
@@ -104,6 +123,13 @@ function Subscription() {
         status: "REJECTED",
       })
       .then((res) => {
+        toast({
+          title: "Success",
+          description: "Subscription rejected successfully",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
         setUsers(
           users.map((user) => {
             if (
@@ -115,6 +141,16 @@ function Subscription() {
             return user;
           })
         );
+        setIsLoading(false);
+      })
+      .catch((err: any) => {
+        toast({
+          title: "Error",
+          description: err.response.data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
         setIsLoading(false);
       });
   };

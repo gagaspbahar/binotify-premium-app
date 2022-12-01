@@ -31,6 +31,7 @@ import {
   MenuList,
   Image,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 
 import {
@@ -147,8 +148,16 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const username = getUsername();
   const isAdmin = getIsAdmin();
+  const toast = useToast();
   const handleLogout = () => {
     logout();
+    toast({
+      title: "Success",
+      description: "You have been logged out",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    })
     navigate("/");
   };
   const navigate = useNavigate();

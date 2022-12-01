@@ -23,6 +23,7 @@ import {
   ModalCloseButton,
   useDisclosure,
   Container,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useEffect, useState } from "react";
@@ -35,6 +36,7 @@ import { Payload } from "../types/user";
 import Loading from "../components/Loading";
 
 function Login() {
+  const toast = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -75,21 +77,43 @@ function Login() {
         password: password,
       });
 
-      console.log("Login successful");
-      setIsLoading(false);
-      setAuthToken(response.data.token);
-
-      const payload: Payload = getAuthData();
-      if (payload.isAdmin) {
-        navigate("/subscription");
+      if (response.status === 200) {
+        toast({
+          title: "Login successful",
+          description: response.data.message,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        })
+        setIsLoading(false);
+        setAuthToken(response.data.token);
+        const payload: Payload = getAuthData();
+        if (payload.isAdmin) {
+          navigate("/subscription");
+        } else {
+          navigate("/song-management");
+        }
       } else {
-        navigate("/song-management");
+        toast({
+          title: "Login failed",
+          description: response.data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        })
+        setIsLoading(false);
       }
-    } catch (error) {
+    } catch (err: any) {
       setIsLoading(false);
-      const err = error as AxiosError;
       if (err.response?.status === 401) {
-        console.log("Login Failed");
+        console.log(err.response)
+        toast({
+          title: "Login failed",
+          description: err.response?.data["message"] as string,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        })
       } else {
         console.log("Internal server error");
       }

@@ -41,8 +41,6 @@ function AddSong() {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setTitle(e.target.value);
-    console.log("hi");
-    console.log(title);
   };
 
   const handleChangeFile: React.ChangeEventHandler<HTMLInputElement> = (
@@ -51,26 +49,55 @@ function AddSong() {
     setAudio(e.target.files?.item(0));
   };
 
+  const validate = () => {
+    if (title === "") {
+      toast({
+        title: "Title is required",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return false;
+    }
+    if (audio === undefined) {
+      toast({
+        title: "Audio is required",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return false;
+    }
+    return true;
+  };
+
   const handleCloseAlert = async () => {
     setShowAlert(false);
     navigate("/song-management");
   };
 
   const handleSubmit = async () => {
-    setIsLoading(true);
-    const formData = new FormData();
-    formData.append("file", audio as File);
-    formData.append("title", title);
-    formData.append("artist_id", userId.toString());
-    console.log(formData);
-    newAxiosInstance
-      .post(`${config.REST_API_URL}/song`, formData)
-      .then((res) => {
-        console.log(res);
-        setShowAlert(true);
-        // navigate('/song-management');
-      });
-    setIsLoading(false);
+    if (validate()) {
+      setIsLoading(true);
+      const formData = new FormData();
+      formData.append("file", audio as File);
+      formData.append("title", title);
+      formData.append("artist_id", userId.toString());
+      console.log(formData);
+      newAxiosInstance
+        .post(`${config.REST_API_URL}/song`, formData)
+        .then((res) => {
+          // console.log(res);
+          // setShowAlert(true);
+          toast({
+            title: res.data.message,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        });
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -138,14 +165,14 @@ function AddSong() {
               />
             </FormControl>
 
-            <ButtonGroup gap="2" ml="30vh" mr="30vh" px="76" pt="6">
+            <ButtonGroup gap="2" ml="30vw" mr="30vw" px="25%" pt="6">
               {/* <Link href="/song-management" style={{ textDecoration: "none" }}> */}
               <Button
                 bg="#1DB954"
                 _hover={{ bg: "#1DB954", color: "black" }}
                 onClick={handleSubmit}
               >
-                Done
+                Add
               </Button>
               {/* </Link> */}
               <RouterLink to={{ pathname: "/song-management" }}>
