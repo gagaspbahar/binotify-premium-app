@@ -17,11 +17,11 @@ import { axiosConfig } from "../utils/axios";
 import { getUserId } from "../utils/auth";
 import axios from "axios";
 import config from "../config/config";
-
+import Loading from "../components/Loading";
 import { useState } from "react";
 
 function AddSong() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setIsLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [audio, setAudio] = useState<File | null>();
   const newAxiosInstance = axios.create(axiosConfig);
@@ -42,6 +42,7 @@ function AddSong() {
   };
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("file", audio as File);
     formData.append("title", title);
@@ -51,22 +52,16 @@ function AddSong() {
       .post(`${config.REST_API_URL}/song`, formData)
       .then((res) => {
         console.log(res);
+        setIsLoading(false);
         alert(res.data.message);
+        setTitle("");
       });
   };
 
   return (
     <>
+      <Loading loading={loading} />
       <Navbar children={undefined} />
-      {loading && (
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
-      )}
 
       <Box minH="100vh" bg="#212121" textColor="white" minW="100vh">
         <Text

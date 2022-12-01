@@ -23,13 +23,15 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const [usernameTaken, setUsernameTaken] = useState(false);
-  const [usernameError, setUsernameError] = useState("Username must be alphanumeric or underscore");
+  const [usernameError, setUsernameError] = useState(
+    "Username must be alphanumeric or underscore"
+  );
   const handleShowClick = () => setShowPassword(!showPassword);
   const navigate = useNavigate();
 
@@ -72,7 +74,8 @@ function Register() {
     }
   };
   const validateUsername = () =>
-    username.length > 0 && username.match(/^[a-z0-9][a-z0-9\d]*(?:_[a-z0-9\d]+)*$/i);
+    username.length > 0 &&
+    username.match(/^[a-z0-9][a-z0-9\d]*(?:_[a-z0-9\d]+)*$/i);
   const validateEmail = () =>
     email.length > 0 &&
     email
@@ -92,13 +95,13 @@ function Register() {
           setUsernameError("Username already taken");
         } else {
           setUsernameTaken(false);
-          setUsernameError("Username must be alphanumeric or underscore")
+          setUsernameError("Username must be alphanumeric or underscore");
         }
       })
       .catch((err: AxiosError) => {
         console.log(err);
       });
-  }
+  };
   const validate = () => {
     if (
       validateName() &&
@@ -117,7 +120,7 @@ function Register() {
   useEffect(() => validate(), [name, username, email, password, confirmation]);
 
   const handleRegister = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const response = await axiosInstance.post("/register", {
         username: username,
@@ -127,11 +130,11 @@ function Register() {
       });
 
       console.log("Register successful");
-      setLoading(false);
+      setIsLoading(false);
 
       navigate("/login");
     } catch (error) {
-      setLoading(false);
+      setIsLoading(false);
       const err = error as AxiosError;
       if (err.response?.status === 401) {
         console.log("Register Failed");
@@ -181,7 +184,11 @@ function Register() {
                   border={"none"}
                   onChange={handleChangeName}
                 />
-                {name && !validateName() && (<Text color="red.400" fontSize="xs">Name must be alphanumeric</Text>)}
+                {name && !validateName() && (
+                  <Text color="red.400" fontSize="xs">
+                    Name must be alphanumeric
+                  </Text>
+                )}
               </FormControl>
               <FormControl id="username" isRequired>
                 <FormLabel>Create a username</FormLabel>
@@ -192,7 +199,11 @@ function Register() {
                   border={"none"}
                   onChange={handleChangeUsername}
                 />
-                {username && (!validateUsername() || usernameTaken) && (<Text color="red.400" fontSize="xs">{usernameError}</Text>)}
+                {username && (!validateUsername() || usernameTaken) && (
+                  <Text color="red.400" fontSize="xs">
+                    {usernameError}
+                  </Text>
+                )}
               </FormControl>
               <FormControl id="email" isRequired>
                 <FormLabel>What's your email?</FormLabel>
@@ -203,7 +214,11 @@ function Register() {
                   border={"none"}
                   onChange={handleChangeEmail}
                 />
-                {email && !validateEmail() && (<Text color="red.400" fontSize="xs">Invalid email.</Text>)}
+                {email && !validateEmail() && (
+                  <Text color="red.400" fontSize="xs">
+                    Invalid email.
+                  </Text>
+                )}
               </FormControl>
 
               <FormControl id="password" isRequired>
@@ -222,7 +237,11 @@ function Register() {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-                {password && !validatePassword() && (<Text color="red.400" fontSize="xs">Password must have 8 characters or more.</Text>)}
+                {password && !validatePassword() && (
+                  <Text color="red.400" fontSize="xs">
+                    Password must have 8 characters or more.
+                  </Text>
+                )}
               </FormControl>
 
               <FormControl id="confirm-password" isRequired>
@@ -241,7 +260,11 @@ function Register() {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-                {confirmation && !validateConfirmation() && (<Text color="red.400" fontSize="xs">Password doesn't match.</Text>)}
+                {confirmation && !validateConfirmation() && (
+                  <Text color="red.400" fontSize="xs">
+                    Password doesn't match.
+                  </Text>
+                )}
               </FormControl>
 
               <Stack spacing={10} pt={2}>

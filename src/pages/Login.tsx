@@ -38,7 +38,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const handleShowClick = () => setShowPassword(!showPassword);
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ function Login() {
   };
 
   const handleLogin = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const response = await axiosInstance.post("/login", {
         username: username,
@@ -76,7 +76,7 @@ function Login() {
       });
 
       console.log("Login successful");
-      setLoading(false);
+      setIsLoading(false);
       setAuthToken(response.data.token);
 
       const payload: Payload = getAuthData();
@@ -86,7 +86,7 @@ function Login() {
         navigate("/song-management");
       }
     } catch (error) {
-      setLoading(false);
+      setIsLoading(false);
       const err = error as AxiosError;
       if (err.response?.status === 401) {
         console.log("Login Failed");

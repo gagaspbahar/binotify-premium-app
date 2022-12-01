@@ -26,6 +26,7 @@ import { getUserId } from "../utils/auth";
 import { FiTrash } from "react-icons/fi";
 import config from "../config/config";
 import axios from "axios";
+import Loading from "../components/Loading";
 
 function SongManagement() {
   type Songs = {
@@ -37,6 +38,7 @@ function SongManagement() {
   };
 
   const initialSongs: Songs[] = [];
+  const [loading, setIsLoading] = useState(false);
   const [songs, setSongs] = useState(initialSongs);
   const [page, setPage] = useState(1);
   const [length, setLength] = useState(0);
@@ -44,6 +46,7 @@ function SongManagement() {
   const userId = getUserId();
 
   useEffect(() => {
+    setIsLoading(true);
     newAxiosInstance
       .get(`${config.REST_API_URL}/songlist/${userId}?page=${page}`)
       .then((res) => {
@@ -57,6 +60,7 @@ function SongManagement() {
           };
         });
         setSongs(songData);
+        setIsLoading(false);
       });
   }, [page]);
 
@@ -71,12 +75,14 @@ function SongManagement() {
   };
 
   const handleDeletion = async (songId: number) => {
+    setIsLoading(true);
     newAxiosInstance
       .delete(`${config.REST_API_URL}/song/${songId}`)
       .then((res) => {
         console.log(res);
         setLength(length - 1);
       });
+    setIsLoading(false);
   };
 
   /*
@@ -99,6 +105,7 @@ function SongManagement() {
 
   return (
     <>
+      <Loading loading={loading} />
       <Navbar children={undefined} />
       <Box minH="100vh" bg="#212121" textColor="white">
         <Flex minWidth="max-content" alignItems="center" gap="2" pr="10">
