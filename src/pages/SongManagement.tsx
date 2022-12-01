@@ -27,6 +27,7 @@ import { FiTrash } from "react-icons/fi";
 import config from "../config/config";
 import axios from "axios";
 import Loading from "../components/Loading";
+import { colors } from "../theme";
 
 function SongManagement() {
   type Songs = {
@@ -180,6 +181,33 @@ function SongManagement() {
             </Tbody>
           </Table>
         </TableContainer>
+        <Box textAlign="center" py="10">
+          <ButtonGroup gap="2">
+            {page > 1 && (
+              <Button
+                bg={colors.primaryColor}
+                _hover={{
+                  bg: colors.white,
+                  color: "black",
+                }}
+                onClick={handlePrevPage}
+              >
+                Prev
+              </Button>
+            )}
+
+            <Button
+              bg={colors.primaryColor}
+              _hover={{
+                bg: colors.white,
+                color: "black",
+              }}
+              onClick={handleNextPage}
+            >
+              Next
+            </Button>
+          </ButtonGroup>
+        </Box>
       </Box>
     </>
   );
