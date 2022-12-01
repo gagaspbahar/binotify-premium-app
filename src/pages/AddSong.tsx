@@ -95,6 +95,14 @@ function AddSong() {
             duration: 3000,
             isClosable: true,
           });
+        })
+        .catch((err) => {
+          toast({
+            title: err.response.data.includes("mp3") ? "File must be mp3" : err.response.data,
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
         });
       setIsLoading(false);
     }
