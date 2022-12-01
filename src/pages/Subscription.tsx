@@ -71,7 +71,7 @@ function Subscription() {
   };
 
   const handleAccept = (creator_id: number, subscriber_id: number) => {
-    setIsLoading(true)
+    setIsLoading(true);
     newAxiosInstance
       .put(`${config.REST_API_URL}/subscription/update`, {
         creator_id: creator_id,
@@ -90,12 +90,12 @@ function Subscription() {
             return user;
           })
         );
-        setIsLoading(false)
+        setIsLoading(false);
       });
   };
 
   const handleReject = (creator_id: number, subscriber_id: number) => {
-    setIsLoading(true)
+    setIsLoading(true);
     newAxiosInstance
       .put(`${config.REST_API_URL}/subscription/update`, {
         creator_id: creator_id,
@@ -114,7 +114,7 @@ function Subscription() {
             return user;
           })
         );
-        setIsLoading(false)
+        setIsLoading(false);
       });
   };
 
@@ -122,7 +122,7 @@ function Subscription() {
     <>
       <Loading loading={loading} />
       <Navbar children={undefined} />
-      <Box minH="100vh" bg="#212121" textColor="white" ml={{ base: 0, md: 60 }}>
+      <Box minH="100vh" bg="#212121" textColor="white">
         <Text fontSize="4xl" fontWeight="bold" textAlign="center" pb="10">
           Subscription Requests
         </Text>

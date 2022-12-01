@@ -68,13 +68,7 @@ function AddSong() {
         />
       )}
 
-      <Box
-        minH="100vh"
-        bg="#212121"
-        textColor="white"
-        ml={{ base: 0, md: 40 }}
-        minW="100vh"
-      >
+      <Box minH="100vh" bg="#212121" textColor="white" minW="100vh">
         <Text fontSize="4xl" fontWeight="bold" textAlign="center" mx="auto">
           Add Premium Song
         </Text>
@@ -105,7 +99,7 @@ function AddSong() {
             </FormControl>
 
             <ButtonGroup gap="2" ml="500" px="76" mt="10">
-              <Link href="/song-management" style={{ textDecoration: "none" }}>
+              <Link style={{ textDecoration: "none" }}>
                 <Button
                   bg="#1DB954"
                   _hover={{ bg: "#1DB954", color: "black" }}
