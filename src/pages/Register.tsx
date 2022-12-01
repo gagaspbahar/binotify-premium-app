@@ -117,7 +117,7 @@ function Register() {
     }
   };
 
-  useEffect(() => validate(), [name, username, email, password, confirmation]);
+  useEffect(() => validate(), [name, username, email, password, confirmation, usernameTaken]);
 
   const handleRegister = async () => {
     setIsLoading(true);
