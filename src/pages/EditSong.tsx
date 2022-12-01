@@ -22,6 +22,8 @@ import { useParams } from "react-router-dom";
 import { axiosConfig } from "../utils/axios";
 import config from "../config/config";
 import axios from "axios";
+import Loading from "../components/Loading";
+
 import { getAuthData } from "../utils/auth";
 
 function EditSong() {
@@ -34,6 +36,7 @@ function EditSong() {
   const [song, setSong] = useState<Song>();
   const [title, setTitle] = useState("");
   const [audio, setAudio] = useState<File | null>();
+  const [loading, setIsLoading] = useState(false);
   const newAxiosInstance = axios.create(axiosConfig);
   const userId = getAuthData().userId;
 
@@ -58,6 +61,7 @@ function EditSong() {
   }, []);
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     const formData = new FormData();
     console.log("liat data");
     console.log(title);
@@ -78,10 +82,12 @@ function EditSong() {
         console.log(res);
         alert(res.data.message);
       });
+    setIsLoading(false);
   };
 
   return (
     <>
+      <Loading loading={loading} />
       <Navbar children={undefined} />
 
       <Box minH="100vh" bg="#212121" textColor="white" minW="100vh" pt="10">

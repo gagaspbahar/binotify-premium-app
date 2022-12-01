@@ -52,10 +52,9 @@ function AddSong() {
       .post(`${config.REST_API_URL}/song`, formData)
       .then((res) => {
         console.log(res);
-        setIsLoading(false);
-        alert(res.data.message);
-        setTitle("");
+        alert("Song successfully added");
       });
+    setIsLoading(false);
   };
 
   return (
@@ -100,7 +99,7 @@ function AddSong() {
             </FormControl>
 
             <ButtonGroup gap="2" ml="30vh" mr="30vh" px="76" pt="6">
-              <Link style={{ textDecoration: "none" }}>
+              <Link href="/song-management" style={{ textDecoration: "none" }}>
                 <Button
                   bg="#1DB954"
                   _hover={{ bg: "#1DB954", color: "black" }}
