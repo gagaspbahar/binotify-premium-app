@@ -59,9 +59,6 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Subscription Requests", icon: FiStar },
 ];
 
-const username = getUsername();
-const isAdmin = getIsAdmin();
-
 export default function Navbar({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -148,6 +145,8 @@ interface MobileProps extends FlexProps {
 
 // HEADER NAVBAR
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const username = getUsername();
+  const isAdmin = getIsAdmin();
   const handleLogout = () => {
     logout();
     navigate("/");

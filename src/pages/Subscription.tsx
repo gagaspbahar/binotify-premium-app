@@ -122,7 +122,7 @@ function Subscription() {
     <>
       <Loading loading={loading} />
       <Navbar children={undefined} />
-      <Box minH="100vh" bg="#212121" textColor="white">
+      <Box minH="100vh" bg="#212121" textColor="white" p={"10"}>
         <Text fontSize="4xl" fontWeight="bold" textAlign="center" pb="10">
           Subscription Requests
         </Text>
