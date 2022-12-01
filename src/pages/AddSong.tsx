@@ -11,6 +11,10 @@ import {
   Button,
   Link,
   ButtonGroup,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
   Spinner,
 } from "@chakra-ui/react";
 import { axiosConfig } from "../utils/axios";
@@ -19,13 +23,16 @@ import axios from "axios";
 import config from "../config/config";
 import Loading from "../components/Loading";
 import { useState } from "react";
+import {Routes, Route, useNavigate} from 'react-router-dom';
 
 function AddSong() {
   const [loading, setIsLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false)
   const [title, setTitle] = useState("");
   const [audio, setAudio] = useState<File | null>();
   const newAxiosInstance = axios.create(axiosConfig);
   const userId = getUserId();
+  const navigate = useNavigate();
 
   const handleChangeTitle: React.ChangeEventHandler<HTMLInputElement> = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -52,7 +59,8 @@ function AddSong() {
       .post(`${config.REST_API_URL}/song`, formData)
       .then((res) => {
         console.log(res);
-        alert("Song successfully added");
+        setShowAlert(true);
+        // navigate('/song-management');
       });
     setIsLoading(false);
   };
@@ -61,6 +69,13 @@ function AddSong() {
     <>
       <Loading loading={loading} />
       <Navbar children={undefined} />
+
+      {showAlert && (
+        <Alert status='success'>
+          <AlertIcon />
+          Song Added Successfully!
+        </Alert>
+      )}
 
       <Box minH="100vh" bg="#212121" textColor="white" minW="100vh">
         <Text
@@ -99,7 +114,7 @@ function AddSong() {
             </FormControl>
 
             <ButtonGroup gap="2" ml="30vh" mr="30vh" px="76" pt="6">
-              <Link href="/song-management" style={{ textDecoration: "none" }}>
+              {/* <Link href="/song-management" style={{ textDecoration: "none" }}> */}
                 <Button
                   bg="#1DB954"
                   _hover={{ bg: "#1DB954", color: "black" }}
@@ -107,7 +122,7 @@ function AddSong() {
                 >
                   Done
                 </Button>
-              </Link>
+              {/* </Link> */}
               <Link href="/song-management" style={{ textDecoration: "none" }}>
                 <Button
                   colorScheme="#212121"
