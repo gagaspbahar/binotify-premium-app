@@ -35,11 +35,10 @@ function App() {
       }
       if (isAdmin === routeType) {
         if (routeType === false) {
-          if(payload.userId != 0) {
-            return children
-          }
-          else {
-            return <Navigate to={redirectPath} />
+          if (payload.userId != 0) {
+            return children;
+          } else {
+            return <Navigate to={redirectPath} />;
           }
         }
         return children;
@@ -59,7 +58,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        
+
         <Route
           path="/subscription"
           element={

@@ -21,7 +21,7 @@ import {
   ButtonGroup,
   Button,
 } from "@chakra-ui/react";
-import { axiosConfig, axiosInstance } from "../utils/axios";
+import { axiosConfig } from "../utils/axios";
 import { getUserId } from "../utils/auth";
 import config from "../config/config";
 import axios from "axios";
@@ -36,7 +36,6 @@ function SongManagement() {
   };
 
   const initialSongs: Songs[] = [];
-  const [showIcon, setShowIcon] = useState(false);
   const [songs, setSongs] = useState(initialSongs);
   const [page, setPage] = useState(1);
   const newAxiosInstance = axios.create(axiosConfig);
@@ -58,6 +57,16 @@ function SongManagement() {
         setSongs(songData);
       });
   }, [page]);
+
+  const handleNextPage = (e: any) => {
+    setPage(page + 1);
+  };
+
+  const handlePrevPage = (e: any) => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
 
   /*
   useEffect(() => {
@@ -129,7 +138,7 @@ function SongManagement() {
                       <Td>{item.title}</Td>
                       <Td>
                         <Link
-                          href="/edit-song"
+                          href={"/edit-song/" + item.song_id.toString()}
                           style={{ textDecoration: "none" }}
                         >
                           Edit

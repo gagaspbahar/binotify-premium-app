@@ -16,8 +16,11 @@ import {
   Link,
   ButtonGroup,
 } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
 
 function EditSong() {
+  let { id } = useParams();
+
   return (
     <>
       <Navbar children={undefined} />
@@ -31,6 +34,7 @@ function EditSong() {
       >
         <Text fontSize="4xl" fontWeight="bold" textAlign="center" mx="auto">
           Edit Premium Song
+          {id}
         </Text>
         <Box maxW="50vh" mx="auto" mt="8vh">
           <Stack spacing={4}>

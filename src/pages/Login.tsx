@@ -90,28 +90,6 @@ function Login() {
         console.log("Internal server error");
       }
     }
-
-    /*
-
-    if (response.status === 200) {
-      // setLoading(true);
-      console.log(loading)
-      console.log("Login successful");
-      console.log(loading)
-      setLoading(false)
-      setAuthToken(response.data.token);
-      const payload: Payload = getAuthData();
-      if (payload.isAdmin) {
-        navigate("/subscription")
-      } else {
-        navigate("/song-management")
-      }
-    } else {
-      setLoading(false);
-      console.log("Error login")
-    }
-  
-  */
   };
 
   return (
