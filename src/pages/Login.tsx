@@ -22,6 +22,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Container,
 } from "@chakra-ui/react";
 
 import { useEffect, useState } from "react";
@@ -31,6 +32,7 @@ import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { setAuthToken, getAuthData } from "../utils/auth";
 import { Payload } from "../types/user";
+import Loading from "../components/Loading";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,7 +55,9 @@ function Login() {
     setPassword(e.target.value);
   };
 
-  useEffect(() => {disableWhenEmpty()}, [username, password]);
+  useEffect(() => {
+    disableWhenEmpty();
+  }, [username, password]);
 
   const disableWhenEmpty = () => {
     if (username === "" || password === "") {
@@ -61,7 +65,7 @@ function Login() {
     } else {
       setIsDisabled(false);
     }
-  }
+  };
 
   const handleLogin = async () => {
     setLoading(true);
@@ -94,17 +98,7 @@ function Login() {
 
   return (
     <>
-      {/* nanti distyling */}
-      {loading && (
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
-      )}
-
+      <Loading loading={loading} />
       <Flex
         minH={"100vh"}
         align={"center"}

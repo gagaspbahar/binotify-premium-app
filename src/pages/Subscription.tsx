@@ -24,6 +24,7 @@ import { colors } from "../theme";
 import config from "../config/config";
 import { axiosConfig, axiosInstance } from "../utils/axios";
 import axios from "axios";
+import Loading from "../components/Loading";
 
 interface Users {
   no: number;
@@ -38,8 +39,10 @@ const initialUsers: Users[] = [];
 function Subscription() {
   const [users, setUsers] = useState(initialUsers);
   const [page, setPage] = useState(1);
+  const [loading, setIsLoading] = useState(false);
   const newAxiosInstance = axios.create(axiosConfig);
   useEffect(() => {
+    setIsLoading(true);
     newAxiosInstance
       .get(`${config.REST_API_URL}/subscription?page=${page}`)
       .then((res) => {
@@ -53,6 +56,7 @@ function Subscription() {
           };
         });
         setUsers(userData);
+        setIsLoading(false);
       });
   }, [page, users.length]);
 
@@ -67,6 +71,7 @@ function Subscription() {
   };
 
   const handleAccept = (creator_id: number, subscriber_id: number) => {
+    setIsLoading(true)
     newAxiosInstance
       .put(`${config.REST_API_URL}/subscription/update`, {
         creator_id: creator_id,
@@ -85,10 +90,12 @@ function Subscription() {
             return user;
           })
         );
+        setIsLoading(false)
       });
   };
 
   const handleReject = (creator_id: number, subscriber_id: number) => {
+    setIsLoading(true)
     newAxiosInstance
       .put(`${config.REST_API_URL}/subscription/update`, {
         creator_id: creator_id,
@@ -107,11 +114,13 @@ function Subscription() {
             return user;
           })
         );
+        setIsLoading(false)
       });
   };
 
   return (
     <>
+      <Loading loading={loading} />
       <Navbar children={undefined} />
       <Box minH="100vh" bg="#212121" textColor="white" ml={{ base: 0, md: 60 }}>
         <Text fontSize="4xl" fontWeight="bold" textAlign="center" pb="10">
