@@ -108,7 +108,7 @@ function SongManagement() {
     <>
       <Loading loading={loading} />
       <Navbar children={undefined} />
-      <Box minH="100vh" bg="#212121" textColor="white">
+      <Box minH="100vh" bg="#212121" textColor="white" p={'10'}>
         <Flex minWidth="max-content" alignItems="center" gap="2" pr="10">
           <Text
             fontSize="4xl"

@@ -68,7 +68,7 @@ export default function Navbar({ children }: { children: ReactNode }) {
     <Box bg={useColorModeValue("#212121", "gray.900")}>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
-      <Box p="4">{children}</Box>
+      <Box p="0">{children}</Box>
     </Box>
   );
 }
