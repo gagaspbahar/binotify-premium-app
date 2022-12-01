@@ -89,7 +89,7 @@ function SongManagement() {
   return (
     <>
       <Navbar children={undefined} />
-      <Box minH="100vh" bg="#212121" textColor="white" ml={{ base: 0, md: 60 }}>
+      <Box minH="100vh" bg="#212121" textColor="white">
         <Flex minWidth="max-content" alignItems="center" gap="2" pr="10">
           <Text fontSize="4xl" fontWeight="bold" textAlign="left" ml="10">
             Manage Songs

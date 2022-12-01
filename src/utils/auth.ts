@@ -7,7 +7,7 @@ function setAuthToken(token: string) {
 
 function getAuthData(): Payload {
   const tokentest = localStorage.getItem("token");
-  try{
+  try {
     const decoded: Payload = jwt_decode(tokentest!);
     return decoded;
   } catch (err) {
@@ -27,4 +27,19 @@ function getUserId(): number {
   return getAuthData().userId;
 }
 
-export { setAuthToken, getAuthData, getUserId, logout };
+function getUsername(): string {
+  return getAuthData().username;
+}
+
+function getIsAdmin(): boolean {
+  return getAuthData().isAdmin;
+}
+
+export {
+  setAuthToken,
+  getAuthData,
+  getUserId,
+  getUsername,
+  getIsAdmin,
+  logout,
+};

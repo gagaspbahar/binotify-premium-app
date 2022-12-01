@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import premiumLogo from "../assets/premium-logo.svg";
+import premiumLogo from "../assets/binotifylogo.svg";
 
 // function Navbar() {
 //   return (
@@ -30,6 +30,7 @@ import {
   MenuItem,
   MenuList,
   Image,
+  Button,
 } from "@chakra-ui/react";
 
 import {
@@ -42,9 +43,11 @@ import {
   FiChevronDown,
 } from "react-icons/fi";
 
+import { getUsername, getIsAdmin } from "../utils/auth";
+
 import { IconType } from "react-icons";
 import { logout } from "../utils/auth";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 interface LinkItemProps {
   name: string;
@@ -56,33 +59,16 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Subscription Requests", icon: FiStar },
 ];
 
+const username = getUsername();
+const isAdmin = getIsAdmin();
+
 export default function Navbar({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box bg={useColorModeValue("#212121", "gray.900")}>
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: "none", md: "block" }}
-      />
-      <Drawer
-        autoFocus={false}
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="full"
-      >
-        <DrawerContent>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {children}
-      </Box>
+      <Box p="4">{children}</Box>
     </Box>
   );
 }
@@ -164,95 +150,52 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
   };
   const navigate = useNavigate();
   return (
     <Flex
-      ml={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      bg={useColorModeValue("#212121", "gray.900")}
+      bg="black"
       textColor={useColorModeValue("white", "gray.200")}
-      justifyContent={{ base: "space-between", md: "flex-end" }}
+      justifyContent={{ base: "space-between" }}
       {...rest}
     >
-      <IconButton
-        display={{ base: "flex", md: "none" }}
-        onClick={onOpen}
-        variant="outline"
-        aria-label="open menu"
-        icon={<FiMenu />}
-      />
-
-      <Text
-        display={{ base: "flex", md: "none" }}
-        fontSize="2xl"
-        fontFamily="monospace"
-        fontWeight="bold"
-      >
-        Logo
-      </Text>
+      <Image src={premiumLogo} alt="logo" height="7vh" />
 
       <HStack spacing={{ base: "0", md: "6" }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
         <Flex alignItems={"center"}>
           <Menu>
-            <MenuButton
-              py={2}
-              transition="all 0.3s"
-              _focus={{ boxShadow: "none" }}
-            >
+            <MenuButton py={2} transition="all 0.3s">
               <HStack>
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
-                  spacing="1px"
+                  spacing="2px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Hello, User</Text>
+                  <Text fontSize="sm">Hello, {username}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {isAdmin ? "Admin" : "Singer"}
                   </Text>
                 </VStack>
-                <Box display={{ base: "none", md: "flex" }}>
-                  <FiChevronDown />
-                </Box>
               </HStack>
             </MenuButton>
-            <MenuList
-              bg={useColorModeValue("black", "gray.900")}
-              borderColor={useColorModeValue("black", "gray.900")}
-            >
-              <MenuItem
-                bg="black"
-                _hover={{
-                  bg: "gray",
-                  color: "white",
-                }}
-              >
-                Profile
-              </MenuItem>
-              <MenuDivider />
-              <MenuItem
-                bg="black"
-                _hover={{
-                  bg: "gray",
-                  color: "white",
-                }}
-                onClick={handleLogout}
-              >
-                Sign out
-              </MenuItem>
-            </MenuList>
           </Menu>
         </Flex>
+        <Button
+          colorScheme="#212121"
+          variant="outline"
+          _hover={{
+            bg: "#FF0052",
+            color: "black",
+          }}
+          onClick={handleLogout}
+        >
+          Log Out
+        </Button>
       </HStack>
     </Flex>
   );
