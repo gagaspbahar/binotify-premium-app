@@ -1,41 +1,23 @@
-import premiumLogo from "../assets/premium-logo.svg";
-import {
-  Flex,
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Stack,
-  Button,
-  Text,
-  useColorModeValue,
-  Link,
-  Image,
-  Spinner,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-} from "@chakra-ui/react";
-
-import { useState } from "react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { axiosInstance } from "../utils/axios";
-import { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
-import { setAuthToken, getAuthData } from "../utils/auth";
-import { Payload } from "../types/user";
+import binongung from "../assets/binongung.webp";
+import { Flex, Stack, Text, useColorModeValue, Image } from "@chakra-ui/react";
 
 function NotFound() {
   return (
     <>
-      <Text>tes</Text>
+      <Flex
+        minH={"100vh"}
+        align={"center"}
+        justify={"center"}
+        textColor={"white"}
+        bg={useColorModeValue("#121212", "gray.800")}
+      >
+        <Stack align={"center"}>
+          <Image src={binongung} alt="logo" mb={8} />
+          <Text fontSize={"lg"} color={"white"}>
+            Sorry, the page you are looking for doesn't exist
+          </Text>
+        </Stack>
+      </Flex>
     </>
   );
 }
