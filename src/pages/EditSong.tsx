@@ -59,6 +59,7 @@ function EditSong() {
     newAxiosInstance.get(`${config.REST_API_URL}/song/${id}`).then((res) => {
       setIsLoading(false);
       setSong(res.data.data);
+      setTitle(res.data.data.title);
     });
   }, []);
 
@@ -66,15 +67,6 @@ function EditSong() {
     if (title === "") {
       toast({
         title: "Title is required",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      return false;
-    }
-    if (audio === undefined) {
-      toast({
-        title: "Audio is required",
         status: "error",
         duration: 3000,
         isClosable: true,
