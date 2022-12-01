@@ -37,7 +37,7 @@ function EditSong() {
   const [title, setTitle] = useState("");
   const [audio, setAudio] = useState<File | null>();
   const [loading, setIsLoading] = useState(false);
-  const newAxiosInstance = axios.create(axiosConfig);
+  const newAxiosInstance = axios.create(axiosConfig());
   const userId = getAuthData().userId;
 
   const handleChangeTitle: React.ChangeEventHandler<HTMLInputElement> = (

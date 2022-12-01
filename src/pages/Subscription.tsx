@@ -25,7 +25,6 @@ import config from "../config/config";
 import { axiosConfig, axiosInstance } from "../utils/axios";
 import axios from "axios";
 import Loading from "../components/Loading";
-import axiosRetry from "axios-retry";
 
 interface Users {
   no: number;
@@ -41,19 +40,8 @@ function Subscription() {
   const [users, setUsers] = useState(initialUsers);
   const [page, setPage] = useState(1);
   const [loading, setIsLoading] = useState(false);
-  const newAxiosInstance = axios.create(axiosConfig);
+  const newAxiosInstance = axios.create(axiosConfig());
 
-  axiosRetry(newAxiosInstance, {
-    retries: 3, // number of retries
-    retryDelay: (retryCount) => {
-        console.log(`retry attempt: ${retryCount}`);
-        return retryCount * 2000; // time interval between retries
-    },
-    retryCondition: (error) => {
-        // if retry condition is not specified, by default idempotent requests are retried
-        return error?.response!.status === 503;
-    },
-  });
   useEffect(() => {
     setIsLoading(true);
     newAxiosInstance
@@ -70,9 +58,7 @@ function Subscription() {
         });
         setUsers(userData);
         setIsLoading(false);
-      }).catch((err) => {
-        setIsLoading(false);
-      });
+      })
   }, [page, users.length]);
 
   const handleNextPage = (e: any) => {

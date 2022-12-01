@@ -44,7 +44,7 @@ function SongManagement() {
   const [songs, setSongs] = useState(initialSongs);
   const [page, setPage] = useState(1);
   const [length, setLength] = useState(0);
-  const newAxiosInstance = axios.create(axiosConfig);
+  const newAxiosInstance = axios.create(axiosConfig());
   const userId = getUserId();
 
   useEffect(() => {

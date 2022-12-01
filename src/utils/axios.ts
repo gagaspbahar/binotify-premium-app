@@ -10,12 +10,12 @@ const axiosInstance = axios.create({
   },
 });
 
-const axiosConfig = {
+const axiosConfig =  () => {return {
   baseURL: BACKEND_REST_API_URL,
   headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
     "Access-Control-Allow-Origin": "*",
   },
-}
+}}
 
 export { axiosInstance, axiosConfig };

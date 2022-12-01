@@ -33,7 +33,7 @@ function AddSong() {
   const [showAlert, setShowAlert] = useState(false);
   const [title, setTitle] = useState("");
   const [audio, setAudio] = useState<File | null>();
-  const newAxiosInstance = axios.create(axiosConfig);
+  const newAxiosInstance = axios.create(axiosConfig());
   const toast = useToast();
   const userId = getUserId();
   const navigate = useNavigate();
