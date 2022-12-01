@@ -63,7 +63,7 @@ function SongManagement() {
         setSongs(songData);
         setIsLoading(false);
       });
-  }, [page]);
+  }, [page, length]);
 
   const handleNextPage = (e: any) => {
     setPage(page + 1);
