@@ -18,7 +18,7 @@ import {
   FormHelperText,
   color,
 } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { axiosConfig } from "../utils/axios";
 import config from "../config/config";
 import axios from "axios";
@@ -31,8 +31,8 @@ function EditSong() {
     title: string;
     filename: string;
   };
-
-  const { id } = useParams();
+  const location = useLocation();
+  const { id } = location.state;
   const [song, setSong] = useState<Song>();
   const [title, setTitle] = useState("");
   const [audio, setAudio] = useState<File | null>();
@@ -44,7 +44,6 @@ function EditSong() {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setTitle(e.target.value);
-    console.log(title);
   };
 
   const handleChangeFile: React.ChangeEventHandler<HTMLInputElement> = (
@@ -54,9 +53,10 @@ function EditSong() {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     newAxiosInstance.get(`${config.REST_API_URL}/song/${id}`).then((res) => {
+      setIsLoading(false);
       setSong(res.data.data);
-      console.log(song);
     });
   }, []);
 
@@ -93,7 +93,6 @@ function EditSong() {
       <Box minH="100vh" bg="#212121" textColor="white" minW="100vh" pt="10">
         <Text fontSize="4xl" fontWeight="bold" textAlign="center" mx="auto">
           Edit Premium Song
-          {id}
         </Text>
         <Box maxW="50vh" mx="auto" mt="8vh">
           <Stack spacing={4}>
@@ -107,6 +106,9 @@ function EditSong() {
                 border={"none"}
                 onChange={handleChangeTitle}
               />
+              <FormHelperText color="white">
+                Previous Song Name: {song?.title}{" "}
+              </FormHelperText>
             </FormControl>
             <FormControl id="username">
               <FormLabel>Insert New Song File</FormLabel>

@@ -28,6 +28,7 @@ import config from "../config/config";
 import axios from "axios";
 import Loading from "../components/Loading";
 import { colors } from "../theme";
+import { Link as RouterLink } from "react-router-dom";
 
 function SongManagement() {
   type Songs = {
@@ -165,12 +166,9 @@ function SongManagement() {
                       <Td>{item.no}</Td>
                       <Td>{item.title}</Td>
                       <Td>
-                        <Link
-                          href={"/edit-song/" + item.song_id.toString()}
-                          style={{ textDecoration: "none" }}
-                        >
+                        <RouterLink to={{"pathname": "/edit-song"}} state={{"id": item.song_id}} >
                           Edit
-                        </Link>
+                        </RouterLink>
                       </Td>
                       <Td>
                         <FiTrash onClick={() => handleDeletion(item.song_id)} />

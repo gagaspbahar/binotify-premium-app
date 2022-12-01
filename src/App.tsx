@@ -92,10 +92,10 @@ function App() {
           }
         />
         <Route
-          path="/edit-song/:id"
+          path="/edit-song/"
           element={
             <ProtectedRoute routeType={false} path="/edit-song/:id">
-              <EditSong />
+              <EditSong/>
             </ProtectedRoute>
           }
         />
