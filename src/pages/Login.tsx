@@ -29,7 +29,7 @@ import { useEffect, useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { axiosInstance } from "../utils/axios";
 import { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { setAuthToken, getAuthData } from "../utils/auth";
 import { Payload } from "../types/user";
 import Loading from "../components/Loading";
@@ -162,9 +162,9 @@ function Login() {
               <Stack pt={6}>
                 <Text align={"center"} textColor="#939393">
                   Didn't have an account?{" "}
-                  <Link href="/register" color={"#1DB954"}>
+                  <RouterLink to={{ pathname: "/register" }} color={"#1DB954"}>
                     Sign Up
-                  </Link>
+                  </RouterLink>
                 </Text>
               </Stack>
             </Stack>

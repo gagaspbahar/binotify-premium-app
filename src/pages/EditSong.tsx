@@ -18,7 +18,7 @@ import {
   FormHelperText,
   color,
 } from "@chakra-ui/react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, Link as RouterLink } from "react-router-dom";
 import { axiosConfig } from "../utils/axios";
 import config from "../config/config";
 import axios from "axios";
@@ -136,7 +136,8 @@ function EditSong() {
                   Done
                 </Button>
               </Link>
-              <Link href="/song-management" style={{ textDecoration: "none" }}>
+
+              <RouterLink to={{ pathname: "/song-management" }}>
                 <Button
                   colorScheme="#212121"
                   variant="outline"
@@ -144,7 +145,7 @@ function EditSong() {
                 >
                   Cancel
                 </Button>
-              </Link>
+              </RouterLink>
             </ButtonGroup>
           </Stack>
         </Box>
