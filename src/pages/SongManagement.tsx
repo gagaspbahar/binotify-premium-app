@@ -23,6 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { axiosConfig } from "../utils/axios";
 import { getUserId } from "../utils/auth";
+import { FiTrash } from "react-icons/fi";
 import config from "../config/config";
 import axios from "axios";
 
@@ -38,6 +39,7 @@ function SongManagement() {
   const initialSongs: Songs[] = [];
   const [songs, setSongs] = useState(initialSongs);
   const [page, setPage] = useState(1);
+  const [length, setLength] = useState(0);
   const newAxiosInstance = axios.create(axiosConfig);
   const userId = getUserId();
 
@@ -68,6 +70,15 @@ function SongManagement() {
     }
   };
 
+  const handleDeletion = async (songId: number) => {
+    newAxiosInstance
+      .delete(`${config.REST_API_URL}/song/${songId}`)
+      .then((res) => {
+        console.log(res);
+        setLength(length - 1);
+      });
+  };
+
   /*
   useEffect(() => {
     try {
@@ -91,7 +102,13 @@ function SongManagement() {
       <Navbar children={undefined} />
       <Box minH="100vh" bg="#212121" textColor="white">
         <Flex minWidth="max-content" alignItems="center" gap="2" pr="10">
-          <Text fontSize="4xl" fontWeight="bold" textAlign="left" ml="10">
+          <Text
+            fontSize="4xl"
+            fontWeight="bold"
+            textAlign="left"
+            ml="10"
+            mb="10"
+          >
             Manage Songs
           </Text>
           <Spacer />
@@ -105,6 +122,7 @@ function SongManagement() {
                 Add Songs
               </Button>
             </Link>
+            {/*
             <Link href="/delete-song" style={{ textDecoration: "none" }}>
               <Button
                 colorScheme="#212121"
@@ -117,6 +135,7 @@ function SongManagement() {
                 Delete Songs
               </Button>
             </Link>
+              */}
           </ButtonGroup>
         </Flex>
 
@@ -126,6 +145,7 @@ function SongManagement() {
               <Tr>
                 <Th color="white">#</Th>
                 <Th color="white">Title</Th>
+                <Th color="white"></Th>
                 <Th color="white"></Th>
               </Tr>
             </Thead>
@@ -143,6 +163,9 @@ function SongManagement() {
                         >
                           Edit
                         </Link>
+                      </Td>
+                      <Td>
+                        <FiTrash onClick={() => handleDeletion(item.song_id)} />
                       </Td>
                     </Tr>
                   );

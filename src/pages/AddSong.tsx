@@ -69,7 +69,13 @@ function AddSong() {
       )}
 
       <Box minH="100vh" bg="#212121" textColor="white" minW="100vh">
-        <Text fontSize="4xl" fontWeight="bold" textAlign="center" mx="auto">
+        <Text
+          fontSize="4xl"
+          fontWeight="bold"
+          textAlign="center"
+          mx="auto"
+          pt="10"
+        >
           Add Premium Song
         </Text>
         <Box maxW="50vh" mx="auto" mt="8vh">
@@ -98,7 +104,7 @@ function AddSong() {
               />
             </FormControl>
 
-            <ButtonGroup gap="2" ml="500" px="76" mt="10">
+            <ButtonGroup gap="2" ml="30vh" mr="30vh" px="76" pt="6">
               <Link style={{ textDecoration: "none" }}>
                 <Button
                   bg="#1DB954"
