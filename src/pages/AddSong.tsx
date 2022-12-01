@@ -8,14 +8,17 @@ import {
   FormLabel,
   Input,
   Stack,
+  Slide,
   Button,
   Link,
   ButtonGroup,
   Alert,
-  AlertIcon,
   AlertTitle,
   AlertDescription,
-  Spinner,
+  AlertIcon,
+  CloseButton,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { axiosConfig } from "../utils/axios";
 import { getUserId } from "../utils/auth";
@@ -31,9 +34,9 @@ function AddSong() {
   const [title, setTitle] = useState("");
   const [audio, setAudio] = useState<File | null>();
   const newAxiosInstance = axios.create(axiosConfig);
+  const toast = useToast();
   const userId = getUserId();
   const navigate = useNavigate();
-
   const handleChangeTitle: React.ChangeEventHandler<HTMLInputElement> = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -46,6 +49,11 @@ function AddSong() {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setAudio(e.target.files?.item(0));
+  };
+
+  const handleCloseAlert = async () => {
+    setShowAlert(false);
+    navigate("/song-management");
   };
 
   const handleSubmit = async () => {
@@ -67,15 +75,32 @@ function AddSong() {
 
   return (
     <>
-      <Loading loading={loading} />
       <Navbar children={undefined} />
-
       {showAlert && (
-        <Alert status="success">
+        <Alert
+          status="success"
+          variant="subtle"
+          // flexDirection='column'
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          textAlign="center"
+          height="80px"
+        >
           <AlertIcon />
-          Song Added Successfully!
+          <AlertTitle>Success!</AlertTitle>
+          <AlertDescription>Your song has been added.</AlertDescription>
+          <CloseButton
+            alignSelf="flex-end"
+            position={"absolute"}
+            right={-1}
+            top={-1}
+            onClick={handleCloseAlert}
+          />
         </Alert>
       )}
+
+      <Loading loading={loading} />
 
       <Box minH="100vh" bg="#212121" textColor="white" minW="100vh">
         <Text
