@@ -174,6 +174,8 @@ function SongManagement() {
                       </Td>
                       <Td>
                         <FiTrash onClick={() => handleDeletion(item.song_id)} />
+           
+
                       </Td>
                     </Tr>
                   );

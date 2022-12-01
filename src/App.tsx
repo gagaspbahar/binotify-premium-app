@@ -7,7 +7,6 @@ import Subscription from "./pages/Subscription";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
 import AddSong from "./pages/AddSong";
-import DeleteSong from "./pages/DeleteSong";
 import EditSong from "./pages/EditSong";
 import NotFound from "./pages/NotFound";
 import { CustomRouteProps } from "./types/route";
@@ -80,14 +79,6 @@ function App() {
           element={
             <ProtectedRoute routeType={false} path="/add-song">
               <AddSong />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/delete-song"
-          element={
-            <ProtectedRoute routeType={false} path="/delete-song">
-              <DeleteSong />
             </ProtectedRoute>
           }
         />
