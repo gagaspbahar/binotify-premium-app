@@ -13,24 +13,32 @@ binotify-premium-app adalah frontend dari aplikasi Binotify Premium yang digunak
 - Responsive design
 - HTTP Client with Axios
 - Local Storage
+- Vite
 
 ## Screenshot
 
 ### Login Page
+![](screenshots/20221202142009.png)  
 
 ### Register Page
+![](screenshots/20221202142030.png)  
 
 ### Subscription Management Page (Admin)
+![](screenshots/20221202142119.png)  
 
 ### Song Management Page (Artist)
 
-List Lagu
-Add Lagu
-Edit Lagu
+#### List Lagu
+![](screenshots/20221202142157.png)  
+
+#### Add Lagu
+![](screenshots/20221202142215.png)  
+
+#### Edit Lagu
+![](screenshots/20221202142241.png)  
 
 ### 404
-
-### Responsive Design
+![](screenshots/20221202142304.png)  
 
 ## Cara menjalankan aplikasi
 
@@ -56,5 +64,6 @@ Alternatif 1:
 9. Navbar: 13520073, 13520076
 10. Responsive Adjustments: 13520076
 11. Initial Design: 13520073, 13520076
+12. Project Setup: 13520016
 
 #### Proudly Presented by Binosed, 2022
