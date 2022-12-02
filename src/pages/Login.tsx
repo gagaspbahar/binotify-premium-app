@@ -73,7 +73,7 @@ function Login() {
     setIsLoading(true);
     try {
       const response = await axiosInstance.post("/login", {
-        username: username,
+        username: username.toLowerCase(),
         password: password,
       });
 

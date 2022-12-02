@@ -70,7 +70,7 @@ function Register() {
   };
 
   const validateName = () => {
-    if (name.length > 2 && name.match(/^[a-z0-9]+$/i)) {
+    if (name.length > 2) {
       return true;
     } else {
       return false;
@@ -126,9 +126,9 @@ function Register() {
     setIsLoading(true);
     try {
       const response = await axiosInstance.post("/register", {
-        username: username,
+        username: username.toLowerCase(),
         password: password,
-        email: email,
+        email: email.toLowerCase(),
         name: name,
       });
       if (response.status === 200) {
