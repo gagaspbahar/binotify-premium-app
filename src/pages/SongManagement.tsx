@@ -27,6 +27,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { axiosConfig } from "../utils/axios";
 import { getUserId } from "../utils/auth";
@@ -56,6 +57,7 @@ function SongManagement() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<null>(null);
+  const toast = useToast();
 
   useEffect(() => {
     setIsLoading(true);
@@ -92,6 +94,13 @@ function SongManagement() {
       .delete(`${config.REST_API_URL}/song/${songId}`)
       .then((res) => {
         console.log(res);
+        toast({
+          title: "Song deleted.",
+          description: "Song has been deleted successfully.",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+        })
         setLength(length - 1);
       });
     setIsLoading(false);
@@ -184,8 +193,8 @@ function SongManagement() {
                         </RouterLink>
                       </Td>
                       <Td>
-                        {/* <FiTrash onClick={() => handleDeletion(item.song_id)} /> */}
-                        <FiTrash onClick={onOpen} />
+                        <FiTrash onClick={() => handleDeletion(item.song_id)} />
+                        {/* <FiTrash onClick={onOpen} />
                         
                         <AlertDialog
                           isOpen={isOpen}
@@ -212,7 +221,7 @@ function SongManagement() {
                               </AlertDialogFooter>
                             </AlertDialogContent>
                           </AlertDialogOverlay>
-                        </AlertDialog>
+                        </AlertDialog> */}
 
                       </Td>
                     </Tr>
