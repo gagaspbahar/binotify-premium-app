@@ -157,7 +157,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       status: "success",
       duration: 5000,
       isClosable: true,
-    })
+    });
     navigate("/");
   };
   const navigate = useNavigate();
@@ -166,7 +166,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      bg="black"
+      bg={useColorModeValue("#121212", "gray.800")}
       textColor={useColorModeValue("white", "gray.200")}
       justifyContent={{ base: "space-between" }}
       {...rest}

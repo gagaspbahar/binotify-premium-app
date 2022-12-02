@@ -96,7 +96,7 @@ function EditSong() {
             status: "success",
             duration: 3000,
             isClosable: true,
-          })
+          });
         });
       setIsLoading(false);
     }
@@ -106,68 +106,75 @@ function EditSong() {
     <>
       <Loading loading={loading} />
       <Navbar children={undefined} />
+      <Flex
+        minH={"100vh"}
+        align={"center"}
+        justify={"center"}
+        textColor={"white"}
+        bg={"#212121"}
+      >
+        <Box minH="100vh" bg="#212121" textColor="white" minW="100vh" pt="10">
+          <Text fontSize="4xl" fontWeight="bold" textAlign="center" mx="auto">
+            Edit Premium Song
+          </Text>
+          <Box maxW="50vh" mx="auto" mt="8vh">
+            <Stack spacing={4}>
+              <FormControl id="title">
+                <FormLabel>Insert New Title</FormLabel>
+                <Input
+                  type="text"
+                  bg="#FFFFFF"
+                  color="black"
+                  placeholder={song?.title}
+                  defaultValue={song?.title}
+                  border={"none"}
+                  onChange={handleChangeTitle}
+                />
+                <FormHelperText color="white">
+                  Previous Song Name: {song?.title}{" "}
+                </FormHelperText>
+              </FormControl>
+              <FormControl id="username">
+                <FormLabel>Insert New Song File</FormLabel>
+                <Input
+                  type="file"
+                  bg="#FFFFFF"
+                  placeholder="New File"
+                  border={"none"}
+                  color="black"
+                  onChange={handleChangeFile}
+                  pt="1"
+                />
+                <FormHelperText color="white">
+                  Previous Song: {song?.filename}{" "}
+                </FormHelperText>
+              </FormControl>
 
-      <Box minH="100vh" bg="#212121" textColor="white" minW="100vh" pt="10">
-        <Text fontSize="4xl" fontWeight="bold" textAlign="center" mx="auto">
-          Edit Premium Song
-        </Text>
-        <Box maxW="50vh" mx="auto" mt="8vh">
-          <Stack spacing={4}>
-            <FormControl id="title">
-              <FormLabel>Insert New Title</FormLabel>
-              <Input
-                type="text"
-                bg="#FFFFFF"
-                color="black"
-                placeholder={song?.title}
-                defaultValue={song?.title}
-                border={"none"}
-                onChange={handleChangeTitle}
-              />
-              <FormHelperText color="white">
-                Previous Song Name: {song?.title}{" "}
-              </FormHelperText>
-            </FormControl>
-            <FormControl id="username">
-              <FormLabel>Insert New Song File</FormLabel>
-              <Input
-                type="file"
-                bg="#FFFFFF"
-                placeholder="New File"
-                border={"none"}
-                color="black"
-                onChange={handleChangeFile}
-                pt="1"
-              />
-              <FormHelperText color="white">
-                Previous Song: {song?.filename}{" "}
-              </FormHelperText>
-            </FormControl>
+              <ButtonGroup gap="2" ml="30vw" mr="30vw" px="25%" pt="6">
+                <Link style={{ textDecoration: "none" }}>
+                  <Button
+                    bg="#1DB954"
+                    _hover={{ bg: "#1DB954", color: "black" }}
+                    onClick={handleSubmit}
+                  >
+                    Done
+                  </Button>
+                </Link>
 
-            <ButtonGroup gap="2" ml="30vw" mr="30vw" px="25%" pt="6">
-              <Link style={{ textDecoration: "none" }}>
-                <Button
-                  bg="#1DB954"
-                  _hover={{ bg: "#1DB954", color: "black" }}
-                  onClick={handleSubmit}
-                >
-                  Done
-                </Button>
-              </Link>
-
-              <RouterLink to={{ pathname: "/song-management" }}>
-                <Button
-                  colorScheme="#212121"
-                  variant="outline"
-                  _hover={{ bg: "#7D7575", color: "black" }}
-                >
-                  Cancel
-                </Button>
-              </RouterLink>
-            </ButtonGroup>
-          </Stack>
+                <RouterLink to={{ pathname: "/song-management" }}>
+                  <Button
+                    colorScheme="#212121"
+                    variant="outline"
+                    _hover={{ bg: "#7D7575", color: "black" }}
+                  >
+                    Cancel
+                  </Button>
+                </RouterLink>
+              </ButtonGroup>
+            </Stack>
+          </Box>
         </Box>
-      </Box>
+      </Flex>
     </>
   );
 }
